@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 		<!-- Custom styles for this template -->
 		<link href="css/style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
 	</head>
 	<body id="page-top">
 		<!-- Navigation -->
@@ -63,14 +64,14 @@
 				<div class="row">
 					<div class="col-lg-12 text-center">
 						<div class="section-title">
-							<h2>Contact Us</h2>
-							<p>If you have some Questions or need Help! Please Contact Us!<br>We make Cool and Clean Design for your Business</p>
+							<h2>Contact Me</h2>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-lg-12 text-center">
-						<form name="sentMessage" id="contactForm" novalidate="">
+						<form name="sentMessage" id="contactForm" action="send_mail.php" method="POST" novalidate>
+                            <input type="hidden" id="csrf_token" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
@@ -119,5 +120,57 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/SmoothScroll.js"></script>
 		<script src="js/theme-scripts.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $("#contactForm").submit(function(e) {
+                    e.preventDefault();
+                    
+                    // Sanitize inputs
+                    const name = DOMPurify.sanitize($("#name").val());
+                    const email = DOMPurify.sanitize($("#email").val());
+                    const message = DOMPurify.sanitize($("#message").val());
+                    
+                    const $form = $(this);
+                    const $submit = $('button[type="submit"]', $form);
+                    const $success = $("#success");
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: $form.attr("action"),
+                        data: {
+                            name: name,
+                            email: email,
+                            message: message,
+                            csrf_token: $("#csrf_token").val()
+                        },
+                        beforeSend: function() {
+                            $submit.prop('disabled', true);
+                        },
+                        success: function(response) {
+                            $success.empty().append(
+                                $("<div>", {
+                                    class: "alert alert-success",
+                                    text: response
+                                })
+                            );
+                            $form.trigger("reset");
+                        },
+                        error: function() {
+                            $success.empty().append(
+                                $("<div>", {
+                                    class: "alert alert-danger",
+                                    text: "An error occurred. Please try again later."
+                                })
+                            );
+                        },
+                        complete: function() {
+                            $submit.prop('disabled', false);
+                        }
+                    });
+                });
+            });
+        </script>
+        
 	</body>
 </html>
