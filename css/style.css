@@ -66,6 +66,24 @@ section {
 	padding: 35px 0 60px;
 }
 
+ul.custom-bullets {
+    list-style-type: disc; /* Standard bullet points */
+    padding-left: 25px; /* Indent for alignment */
+    padding-right: 25px; /* Added padding to the right */
+    font-family: 'Raleway', sans-serif;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 28px;
+    letter-spacing: 0.2px;
+    color: #ffffff;
+    text-align: left; /* Ensures text is left-aligned */
+    box-sizing: border-box; /* Prevents padding from affecting overall width */
+}
+
+ul.custom-bullets li {
+    margin-bottom: 10px; /* Spacing between bullet points */
+    text-align: left; /* Left alignment for bullet items */
+}
 /*--------------------
 1.1 Reset bootstrap
 --------------------*/
@@ -321,6 +339,7 @@ figcaption {
 }
 
 figure.effect-bubba {
+    height: 385px;
 	background: #000;
 	margin-bottom: 1px;
 }
@@ -400,7 +419,7 @@ figure.effect-bubba:hover p {
 	transform: translate3d(0,0,0);
 }
 .effect-bubba.wide-project {
-    height: 400px; /* Match height of two normal boxes side by side */
+    height: 385px; /* Match height of two normal boxes side by side */
     width: 100%;
     overflow: hidden;
     position: relative;
