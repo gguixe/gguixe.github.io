@@ -398,6 +398,42 @@ figure.effect-bubba:hover p {
 	-webkit-transform: translate3d(0,0,0);
 	transform: translate3d(0,0,0);
 }
+.effect-bubba.wide-project {
+    height: 400px; /* Match height of two normal boxes side by side */
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.effect-bubba.wide-project img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.effect-bubba.wide-project figcaption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.effect-bubba.wide-project h2 {
+    padding-top: 0;
+    margin-top: 0;
+    position: relative;
+    top: 0;
+}
+
+.effect-bubba.wide-project p {
+    padding: 0 1em;
+    margin: 0;
+}
 
 /*--------------------
 4.4. Dark Short section (counters, quote, etc)
@@ -547,12 +583,18 @@ footer p a span {
 }
 
 .modal-body {
+    text-align: center;
 	padding: 0;
 }
 
 .modal-body p {
 	margin: 30px 20px;
 	color: #2D2D2D;		
+}
+
+.modal-body img {
+    display: inline-block;
+    margin: 0 auto;
 }
 
 .modal-works {
