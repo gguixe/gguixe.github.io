@@ -475,7 +475,7 @@ figure.effect-bubba:hover p {
 
 .team-item {
     text-align: center;
-    background-color: #F5F5F5;
+    background-color: #242424;
 }
 
 .team-item h3 {
@@ -573,6 +573,7 @@ footer p a span {
 --------------------*/
 
 .modal-content {
+    background-color: #242424; /* Grey background */
 	border-radius: 0;	
 }
 .modal-header .close {
@@ -590,7 +591,7 @@ footer p a span {
 
 .modal-body p {
 	margin: 30px 20px;
-	color: #2D2D2D;		
+	color: #ffffff;		
 }
 
 .modal-body img {
@@ -608,7 +609,7 @@ font-size: 11px;
 }
 
 .modal-works span {
-	background-color: #FED136;
+	background-color: #c09600;
     margin-right: 15px;
     padding: 5px 10px;
 }
