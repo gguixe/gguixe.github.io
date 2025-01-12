@@ -1,2 +1,2 @@
 # gguixe.github.io
-Personal website
+Mutant Rat Games personal website
