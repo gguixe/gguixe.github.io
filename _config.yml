@@ -1,0 +1,16 @@
+title: Mutant Rat Games
+description: Game Development and Embedded Systems
+baseurl: ""
+url: ""
+
+# Build settings
+markdown: kramdown
+permalink: /blog/:year/:month/:day/:title/
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
