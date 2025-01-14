@@ -3,6 +3,7 @@ layout: default
 title: Blog
 permalink: /blog.html
 ---
+
 <section id="blog">
     <div class="container">
         <div class="row">
@@ -15,26 +16,73 @@ permalink: /blog.html
                 </div>
             </div>
         </div>
-        {% for post in site.posts %}
-        <div class="row blog-post">
-            <div class="col-md-3 blog-image-container">
-                {% if post.image %}
-                <img src="{{ site.baseurl }}/assets/images/{{ post.image }}" alt="{{ post.title }}" class="img-responsive blog-thumbnail">
-                {% endif %}
+
+        <!-- Search functionality -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <input type="text" id="titleSearch" class="form-control" placeholder="Search by title...">
             </div>
-            <div class="col-md-9">
-                <h3>{{ post.title }}</h3>
-                <div class="post-meta">
-                    <span class="date"><i class="fa fa-calendar"></i> {{ post.date | date: "%B %-d, %Y" }}</span>
-                    {% if post.category %}<span class="category"><i class="fa fa-tag"></i> {{ post.category }}</span>{% endif %}
-                    {% if post.author %}<span class="author"><i class="fa fa-user"></i> {{ post.author }}</span>{% endif %}
-                </div>
-                <p class="post-excerpt">
-                    {{ post.excerpt | strip_html | truncatewords: 50 }}
-                </p>
-                <a href="{{ post.url | prepend: site.baseurl }}" class="btn btn-default">Read More</a>
+            <div class="col-md-6">
+                <select id="categoryFilter" class="form-control">
+                    <option value="">All Categories</option>
+                    {% assign categories = site.posts | map: "category" | uniq %}
+                    {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Blog posts container -->
+        <div id="blogPosts">
+            {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
+            {% for post in sorted_posts %}
+            <div class="row blog-post" data-title="{{ post.title | downcase }}" data-category="{{ post.category }}">
+                <div class="col-md-3 blog-image-container">
+                    {% if post.image %}
+                    <img src="{{ site.baseurl }}/assets/images/{{ post.image }}" alt="{{ post.title }}" class="img-responsive blog-thumbnail">
+                    {% endif %}
+                </div>
+                <div class="col-md-9">
+                    <h3>{{ post.title }}</h3>
+                    <div class="post-meta">
+                        <span class="date"><i class="fa fa-calendar"></i> {{ post.date | date: "%B %-d, %Y" }}</span>
+                        {% if post.category %}<span class="category"><i class="fa fa-tag"></i> {{ post.category }}</span>{% endif %}
+                        {% if post.author %}<span class="author"><i class="fa fa-user"></i> {{ post.author }}</span>{% endif %}
+                    </div>
+                    <p class="post-excerpt">
+                        {{ post.excerpt | strip_html | truncatewords: 50 }}
+                    </p>
+                    <a href="{{ post.url | prepend: site.baseurl }}" class="btn btn-default">Read More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const titleSearch = document.getElementById('titleSearch');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const blogPosts = document.querySelectorAll('.blog-post');
+
+    function filterPosts() {
+        const searchTerm = titleSearch.value.toLowerCase();
+        const selectedCategory = categoryFilter.value.toLowerCase();
+
+        blogPosts.forEach(post => {
+            const title = post.getAttribute('data-title');
+            const category = post.getAttribute('data-category').toLowerCase();
+            
+            const matchesTitle = title.includes(searchTerm);
+            const matchesCategory = !selectedCategory || category === selectedCategory;
+
+            post.style.display = (matchesTitle && matchesCategory) ? 'block' : 'none';
+        });
+    }
+
+    titleSearch.addEventListener('input', filterPosts);
+    categoryFilter.addEventListener('change', filterPosts);
+});
+</script>
