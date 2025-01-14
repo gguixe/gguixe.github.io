@@ -1,0 +1,40 @@
+- id: space-arrow
+  type: wide
+  title: Space Arrow Project
+  description: Top-Down Tactical Shooter, ImSim Design, Emergent Gameplay
+  image: assets/images/space_arrow1.png
+  carousel: true
+  carousel_images:
+    - assets/images/space_arrow1.png
+    - assets/images/space_arrow2.png
+  video: https://www.youtube.com/embed/IYRikZVoUlQ
+  tags:
+    - Top-down tactical shooter
+    - ImSim
+    - Emergent Gameplay
+  full_description: Game still in progress
+  links:
+    - text: Play Demo
+      url: https://example.com/demo
+    - text: GitHub
+      url: https://github.com/yourusername/space-arrow
+
+- id: text-rpg
+  type: normal
+  title: Text Based RPG
+  description: Text Based, RPG
+  image: assets/images/projects/text_rpg.png
+  tags:
+    - Text-Based
+    - RPG
+  full_description: Prototype of Text-Based RPG
+
+- id: tile-explorer
+  type: normal
+  title: Tile Explorer
+  description: Board Game, Exploration
+  image: assets/images/projects/tile_explorer1.png
+  tags:
+    - Board Game
+    - Exploration
+  full_description: Unfinished Game Jam about Exploring Tiles around a grid & managing resources

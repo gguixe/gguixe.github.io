@@ -3,98 +3,35 @@ layout: default
 title: Embedded
 permalink: /embedded.html
 ---
-		
+
 <section id="portfolio">
-<div class="container">
-<div class="row">
-	<div class="col-lg-12 text-center">
-		<div class="section-title">
-			<h2>Embedded</h2>
-			<p>Microcontrollers, SoM, FPGAs & Others</p>
-		</div>
-	</div>
-</div>
-<div class="row row-0-gutter">
-	<!-- start portfolio item -->
-	<div class="col-md-6 col-0-gutter">
-		<div class="ot-portfolio-item">
-			<figure class="effect-bubba">
-				<img src="assets/images/projects/ethernet_stack.png" alt="img02" class="img-responsive" />
-				<figcaption>
-					<h2>UDP/IPv4 Ethernet Protocol Stack</h2>
-					<p>Ethernet, FPGA</p>
-					<a href="#" data-toggle="modal" data-target="#Modal-1">View more</a>
-				</figcaption>
-			</figure>
-		</div>
-	</div>
-	<!-- end portfolio item -->
-	<!-- start portfolio item -->
-	<div class="col-md-6 col-0-gutter">
-		<div class="ot-portfolio-item">
-			<figure class="effect-bubba">
-				<img src="assets/images/projects/virgo_photo.jpg" alt="img02" class="img-responsive" />
-				<figcaption>
-					<h2>Advanced Virgo laser interferometer</h2>
-					<p>PCB, DSP, FPGA, uC</p>
-					<a href="#" data-toggle="modal" data-target="#Modal-2">View more</a>
-				</figcaption>
-			</figure>
-		</div>
-	</div>
-	<!-- end portfolio item -->
-</div>
-</div><!-- container -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Embedded</h2>
+                    <p>Microcontrollers, SoM, FPGAs & Others</p>
+                </div>
+            </div>
+        </div>
+
+        {% assign normal_projects = site.data.projects-embedded | where: "type", "normal" %}
+
+		<!-- Normal Projects (in pairs) -->
+		{% for project in normal_projects %}
+			{% assign mod2 = forloop.index0 | modulo: 2 %}
+			{% if mod2 == 0 %}
+				<div class="row row-0-gutter">
+			{% endif %}
+			{% include projects/normal-project.html project=project %}
+			{% if mod2 == 1 or forloop.last %}
+				</div>
+			{% endif %}
+		{% endfor %}
+    </div>
 </section>
 
-<!-- Modal for portfolio item 2 -->
-<div class="modal fade" id="Modal-1" tabindex="-1" role="dialog" aria-labelledby="Modal-label-2">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="Modal-label-2">UDP/IPv4 Ethernet Protocol Stack</h4>
-			</div>
-			<div class="modal-body">
-				<img src="assets/images/projects/ethernet_stack.png" alt="img01" class="img-responsive" />
-				<div class="modal-works"><span>Ethernet</span><span>FPGA</span></div>
-				<p>Designed and developed a full IP core as an UDP/IPv4 Ethernet protocol stack.</p>
-				<ul class="custom-bullets">
-					<li>Application layer services: DAQ writing interfaces, Flash memory interface, Registers and Ping replies.</li>
-					<li>SPI interfaces, flash and registers management via Ethernet.</li>
-					<li>Tx and Rx protocols for all layers UDP, IPv4, Ethernet, RGMii.</li>
-					<li>DHCP, ARP and ICMP protocols.</li>
-				</ul>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- Modal for portfolio item 3 -->
-<div class="modal fade" id="Modal-2" tabindex="-1" role="dialog" aria-labelledby="Modal-label-3">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="Modal-label-3">Advanced Virgo laser interferometer</h4>
-			</div>
-			<div class="modal-body">
-				<img src="assets/images/projects/virgo_photo.jpg" alt="img01" class="img-responsive" />
-				<div class="modal-works"><span>PCB</span><span>DSP</span><span>FPGA</span><span>uC</span></div>
-				<p>Designed electronics for real-time control of suspended masses for the Advanced Virgo laser interferometer.</p>
-				<ul class="custom-bullets">
-					<li>Developed and studied high-speed ADC & DAC systems.</li>
-					<li>Implemented JESD204B & RapidIO interfaces in FPGA.</li>
-					<li>Designed schematics and PCB layouts for High-Speed ADCs, DACs, and FPGAs.</li>
-					<li>Received training in interferometer monitoring and noise characterization.</li>
-				</ul>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
+<!-- Modals -->
+{% for project in site.data.projects-embedded %}
+    {% include projects/project-modal.html project=project %}
+{% endfor %}

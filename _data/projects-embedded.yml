@@ -1,0 +1,31 @@
+- id: ethernet-stack
+  type: normal
+  title: UDP/IPv4 Ethernet Protocol Stack
+  description: Ethernet, FPGA
+  image: assets/images/projects/ethernet_stack.png
+  tags:
+    - Ethernet
+    - FPGA
+  full_description: Designed and developed a full IP core as an UDP/IPv4 Ethernet protocol stack.
+  bullet_points:
+    - Application layer services: DAQ writing interfaces, Flash memory interface, Registers and Ping replies.
+    - SPI interfaces, flash and registers management via Ethernet.
+    - Tx and Rx protocols for all layers UDP, IPv4, Ethernet, RGMii.
+    - DHCP, ARP and ICMP protocols.
+
+- id: virgo
+  type: normal
+  title: Advanced Virgo laser interferometer
+  description: PCB, DSP, FPGA, uC
+  image: assets/images/projects/virgo_photo.jpg
+  tags:
+    - PCB
+    - DSP
+    - FPGA
+    - uC
+  full_description: Designed electronics for real-time control of suspended masses for the Advanced Virgo laser interferometer.
+  bullet_points:
+    - Developed and studied high-speed ADC & DAC systems.
+    - Implemented JESD204B & RapidIO interfaces in FPGA.
+    - Designed schematics and PCB layouts for High-Speed ADCs, DACs, and FPGAs.
+    - Received training in interferometer monitoring and noise characterization.

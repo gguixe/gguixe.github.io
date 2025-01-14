@@ -1,0 +1,13 @@
+{% assign project = include.project %}
+<div class="col-md-6 col-0-gutter">
+    <div class="ot-portfolio-item">
+        <figure class="effect-bubba">
+            <img src="{{ project.image }}" alt="{{ project.title }}" class="img-responsive" />
+            <figcaption>
+                <h2>{{ project.title }}</h2>
+                <p>{{ project.description }}</p>
+                <a href="#" data-toggle="modal" data-target="#Modal-{{ project.id }}">View more</a>
+            </figcaption>
+        </figure>
+    </div>
+</div>

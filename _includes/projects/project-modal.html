@@ -1,0 +1,46 @@
+{% assign project = include.project %}
+<div class="modal fade" id="Modal-{{ project.id }}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="Modal-label-{{ project.id }}">{{ project.title }}</h4>
+            </div>
+            <div class="modal-body">
+                {% if project.carousel %}
+                    {% include projects/carousel-modal.html 
+                        images=project.carousel_images 
+                        video=project.video 
+                        project_id=project.id %}
+                {% else %}
+                    <img src="{{ project.image }}" alt="{{ project.title }}" class="img-responsive" />
+                {% endif %}
+
+                <div class="modal-works">
+                    {% for tag in project.tags %}
+                        <span>{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                
+                {% if project.full_description %}
+                    <p>{{ project.full_description }}</p>
+                {% endif %}
+
+                {% if project.links %}
+                    <div class="project-links">
+                        {% for link in project.links %}
+                            <a href="{{ link.url }}" class="btn btn-primary" target="_blank">
+                                {{ link.text }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

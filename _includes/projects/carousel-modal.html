@@ -1,0 +1,44 @@
+{% assign images = include.images %}
+{% assign project_id = include.project_id %}
+
+<div id="carousel-{{ project_id }}" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        {% for image in images %}
+            <li data-target="#carousel-{{ project_id }}" data-slide-to="{{ forloop.index0 }}" 
+                {% if forloop.first %}class="active"{% endif %}></li>
+        {% endfor %}
+        {% if include.video %}
+            <li data-target="#carousel-{{ project_id }}" data-slide-to="{{ images.size }}"></li>
+        {% endif %}
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        {% for image in images %}
+            <div class="item {% if forloop.first %}active{% endif %}">
+                <img src="{{ image }}" alt="Slide {{ forloop.index }}" class="img-responsive">
+            </div>
+        {% endfor %}
+        
+        {% if include.video %}
+            <div class="item">
+                <div class="video-container">
+                    <iframe class="img-responsive" 
+                        src="{{ include.video }}" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-{{ project_id }}" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#carousel-{{ project_id }}" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+</div>
