@@ -40,7 +40,7 @@
   - text: Demo
     url: https://fancy-skaven.itch.io/devils-flock
   - text: GitHub
-    url: https://github.com/yourusername/space-arrow
+    url: https://github.com/gguixe/Random_Arena
 
 - id: tile-explorer
   type: narrow
@@ -59,10 +59,7 @@
   image: assets/images/projects/flappy0.png
   tags:
     - Mobile Game
-  full_description: Flappy Game
-  links:
-    - text: GitHub
-      url: https://github.com/yourusername/space-arrow
+  full_description: A Flappy Bird-style game developed while relearning Unity after a couple of years away from game development. This project was created during the COVID-19 pandemic when we were all stuck at home.
 
 - id: basic-rpg
   type: narrow
@@ -78,7 +75,7 @@
   full_description: Basic top-down 2D RPG
   links:
     - text: GitHub
-      url: https://github.com/yourusername/space-arrow
+      url: https://github.com/gguixe/Abyss
 
 - id: grid-based
   type: narrow
@@ -87,10 +84,8 @@
   image: assets/images/projects/grid-based.png
   tags:
     - Grid-Based
-  full_description: Multiple grid-based implementation and pathfinding algorithms
+  full_description: Grid-based implementation and pathfinding algorithms, the project was based in some CodeMonkeyh online tutorials and then expanded with new features.
   links:
     - text: GitHub
-      url: https://github.com/yourusername/space-arrow
-    - text: GitHub
-      url: https://github.com/yourusername/space-arrow
+      url: https://github.com/gguixe/Grid_Multiplayer
 
