@@ -13,9 +13,6 @@
     - ImSim
     - Emergent Gameplay
   full_description: Game still in progress
-  links:
-  - text: GitHub
-    url: https://github.com/yourusername/space-arrow
 
 - id: text-rpg
   type: normal
@@ -30,35 +27,36 @@
 - id: random-arena
   type: normal
   title: Random Arena
-  description: Top-down tactical shooter
-  image: assets/images/projects/tile_explorer1.png
+  description: Top-down shooter
+  carousel: true
+  image: assets/images/projects/jam1.png
+  carousel_images:
+    - assets/images/projects/jam1.png
+    - assets/images/projects/jam2.png
   tags:
-    - Top-down tactical shooter
-  full_description: Level Up Game Jam with the topic of "Randomness"
+    - Top-down shooter
+  full_description: LevelUp Game Jam 2022 Project - Theme "Element of chance"
   links:
   - text: Demo
-    url: https://example.com/demo
+    url: https://fancy-skaven.itch.io/devils-flock
   - text: GitHub
     url: https://github.com/yourusername/space-arrow
 
 - id: tile-explorer
-  type: normal
+  type: narrow
   title: Tile Explorer
   description: Board Game, Exploration
   image: assets/images/projects/tile_explorer1.png
   tags:
     - Board Game
     - Exploration
-  full_description: Unfinished Game Jam about Exploring Tiles around a grid & managing resources
-  links:
-    - text: GitHub
-      url: https://github.com/yourusername/space-arrow
+  full_description: Unfinished Game Jam Project about exploring Tiles around a grid & managing resources
 
 - id: flappy-game
-  type: normal
+  type: narrow
   title: Flappy Game
   description: Mobile Game
-  image: assets/images/projects/tile_explorer1.png
+  image: assets/images/projects/flappy0.png
   tags:
     - Mobile Game
   full_description: Flappy Game
@@ -66,14 +64,33 @@
     - text: GitHub
       url: https://github.com/yourusername/space-arrow
 
-- id: a-algorithm
+- id: basic-rpg
   type: narrow
-  title: A* Algorithm
-  description: Turn-based
-  image: assets/images/projects/tile_explorer1.png
+  title: Basic RPG
+  description: RPG
+  image: assets/images/projects/abyss1.png
+  carousel: true
+  carousel_images:
+    - assets/images/projects/abyss1.png
+    - assets/images/projects/abyss2.png
   tags:
-    - Turn-based
-  full_description: Implementation of A* Algorithm in grid turn-based game
+    - RPG
+  full_description: Basic top-down 2D RPG
   links:
     - text: GitHub
       url: https://github.com/yourusername/space-arrow
+
+- id: grid-based
+  type: narrow
+  title: Grid Based
+  description: Grid-Based
+  image: assets/images/projects/grid-based.png
+  tags:
+    - Grid-Based
+  full_description: Multiple grid-based implementation and pathfinding algorithms
+  links:
+    - text: GitHub
+      url: https://github.com/yourusername/space-arrow
+    - text: GitHub
+      url: https://github.com/yourusername/space-arrow
+
