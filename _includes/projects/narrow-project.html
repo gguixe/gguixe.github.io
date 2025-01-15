@@ -8,6 +8,7 @@
                 <p>{{ project.description }}</p>
                 <a href="#" data-toggle="modal" data-target="#Modal-{{ project.id }}">View more</a>
             </figcaption>
+            {% include projects/icon-links.html links=project.links %}
         </figure>
     </div>
 </div>

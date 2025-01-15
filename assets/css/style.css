@@ -468,6 +468,32 @@ figure.effect-bubba:hover p {
     margin: 0;
 }
 
+.icon-links {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 2;
+}
+
+.icon-links i {
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 8px;
+    font-size: 18px;
+}
+
+.icon-links i:hover {
+    color: white;
+}
+
+.icon-links-modal {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px; 
+    justify-content: center;
+}
+
 /*--------------------
 4.4. Dark Short section (counters, quote, etc)
 --------------------*/
@@ -619,6 +645,7 @@ footer p a span {
 .modal-body {
     text-align: center;
 	padding: 0;
+    padding-bottom: 30px;
 }
 
 .modal-body p {
@@ -629,6 +656,10 @@ footer p a span {
 .modal-body img {
     display: inline-block;
     margin: 0 auto;
+}
+
+.modal-button {
+    margin-bottom: 30px;
 }
 
 .modal-works {

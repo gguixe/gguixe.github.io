@@ -14,10 +14,8 @@
     - Emergent Gameplay
   full_description: Game still in progress
   links:
-    - text: Play Demo
-      url: https://example.com/demo
-    - text: GitHub
-      url: https://github.com/yourusername/space-arrow
+  - text: GitHub
+    url: https://github.com/yourusername/space-arrow
 
 - id: text-rpg
   type: normal
@@ -29,6 +27,20 @@
     - RPG
   full_description: Prototype of Text-Based RPG
 
+- id: random-arena
+  type: normal
+  title: Random Arena
+  description: Top-down tactical shooter
+  image: assets/images/projects/tile_explorer1.png
+  tags:
+    - Top-down tactical shooter
+  full_description: Level Up Game Jam with the topic of "Randomness"
+  links:
+  - text: Demo
+    url: https://example.com/demo
+  - text: GitHub
+    url: https://github.com/yourusername/space-arrow
+
 - id: tile-explorer
   type: normal
   title: Tile Explorer
@@ -38,3 +50,30 @@
     - Board Game
     - Exploration
   full_description: Unfinished Game Jam about Exploring Tiles around a grid & managing resources
+  links:
+    - text: GitHub
+      url: https://github.com/yourusername/space-arrow
+
+- id: flappy-game
+  type: normal
+  title: Flappy Game
+  description: Mobile Game
+  image: assets/images/projects/tile_explorer1.png
+  tags:
+    - Mobile Game
+  full_description: Flappy Game
+  links:
+    - text: GitHub
+      url: https://github.com/yourusername/space-arrow
+
+- id: a-algorithm
+  type: narrow
+  title: A* Algorithm
+  description: Turn-based
+  image: assets/images/projects/tile_explorer1.png
+  tags:
+    - Turn-based
+  full_description: Implementation of A* Algorithm in grid turn-based game
+  links:
+    - text: GitHub
+      url: https://github.com/yourusername/space-arrow

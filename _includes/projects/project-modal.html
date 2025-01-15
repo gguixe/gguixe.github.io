@@ -29,13 +29,13 @@
                 {% endif %}
 
                 {% if project.links %}
-                    <div class="project-links">
-                        {% for link in project.links %}
-                            <a href="{{ link.url }}" class="btn btn-primary" target="_blank">
-                                {{ link.text }}
-                            </a>
-                        {% endfor %}
-                    </div>
+                <div class="project-links-modal d-flex justify-content-start">
+                    {% for link in project.links %}
+                        <a href="{{ link.url }}" type="button" class="btn btn-default" target="_blank">
+                            {{ link.text }}
+                        </a>
+                    {% endfor %}
+                </div>
                 {% endif %}
             </div>
             <div class="modal-footer">

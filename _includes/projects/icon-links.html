@@ -1,0 +1,13 @@
+     <!-- Add this new div for icons -->
+     <div class="icon-links">
+        {% if project.links %}
+            {% for link in project.links %}
+                {% if link.text == "Demo" %}
+                    <i class="fa fa-gamepad" title="Demo"></i>
+                {% endif %}
+                {% if link.text == "GitHub" %}
+                    <i class="fa fa-github" title="GitHub"></i>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
