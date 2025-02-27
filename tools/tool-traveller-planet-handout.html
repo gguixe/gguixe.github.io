@@ -1,0 +1,1190 @@
+---
+layout: default
+title: Planet Handout
+permalink: /tools/planet-handout
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRAVELLER — Planet Data Recorder</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void:#030609; --deep:#06101e; --panel:#091525; --border:#163452;
+    --accent:#00c8ff; --accent2:#ff6b35; --gold:#ffd166; --text:#c8dff0;
+    --dim:#4a6a88; --green:#39ff9a;
+    --glow:0 0 20px rgba(0,200,255,0.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--void);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden;}
+  #starfield{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+  .container{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:20px;}
+  header{text-align:center;padding:26px 0 16px;border-bottom:1px solid var(--border);margin-bottom:24px;position:relative;}
+  header::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:220px;height:2px;background:var(--accent);box-shadow:var(--glow);}
+  .title-sub{font-family:'Share Tech Mono',monospace;color:var(--accent);font-size:10px;letter-spacing:6px;text-transform:uppercase;margin-bottom:6px;opacity:0.65;}
+  h1{font-family:'Orbitron',sans-serif;font-size:clamp(20px,3.2vw,42px);font-weight:900;color:#fff;text-shadow:0 0 40px rgba(0,200,255,0.5),0 0 80px rgba(0,200,255,0.18);letter-spacing:5px;}
+  .title-ver{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:3px;margin-top:5px;}
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:900px){.main-grid{grid-template-columns:1fr;}}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:3px;padding:16px;position:relative;}
+  .panel::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);border-radius:3px 0 0 3px;}
+  .panel.orange::before{background:var(--accent2);}
+  .panel.gold::before{background:var(--gold);}
+  .panel-title{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:13px;padding-bottom:9px;border-bottom:1px solid var(--border);}
+  .panel.orange .panel-title{color:var(--accent2);}
+  .panel.gold .panel-title{color:var(--gold);}
+  .tabs{display:flex;gap:3px;margin-bottom:16px;}
+  .tab{flex:1;padding:9px;background:var(--deep);border:1px solid var(--border);color:var(--dim);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-align:center;}
+  .tab:hover{border-color:var(--accent);color:var(--accent);}
+  .tab.active{background:rgba(0,200,255,0.08);border-color:var(--accent);color:var(--accent);}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 16px;border:1px solid var(--accent);background:rgba(0,200,255,0.08);color:var(--accent);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;border-radius:2px;width:100%;}
+  .btn:hover{background:rgba(0,200,255,0.16);box-shadow:var(--glow);transform:translateY(-1px);}
+  .btn-orange{border-color:var(--accent2);color:var(--accent2);background:rgba(255,107,53,0.08);}
+  .btn-orange:hover{background:rgba(255,107,53,0.16);box-shadow:0 0 20px rgba(255,107,53,0.3);}
+  .btn-green{border-color:var(--green);color:var(--green);background:rgba(57,255,154,0.08);}
+  .btn-green:hover{background:rgba(57,255,154,0.16);box-shadow:0 0 20px rgba(57,255,154,0.3);}
+  .btn-sm{width:auto;padding:7px 12px;font-size:8px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .form-group{display:flex;flex-direction:column;gap:4px;}
+  .form-group.full{grid-column:1/-1;}
+  label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;}
+  input[type=text],select,textarea{background:var(--deep);border:1px solid var(--border);color:var(--text);padding:7px 9px;font-family:'Share Tech Mono',monospace;font-size:12px;border-radius:2px;transition:border-color 0.2s;outline:none;width:100%;}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 8px rgba(0,200,255,0.14);}
+  select option{background:var(--deep);}
+  textarea{resize:vertical;min-height:54px;}
+  .uwp-display{font-family:'Share Tech Mono',monospace;font-size:24px;color:var(--gold);text-shadow:0 0 16px rgba(255,209,102,0.4);text-align:center;padding:12px;background:var(--deep);border:1px solid var(--border);border-radius:2px;letter-spacing:4px;margin-bottom:13px;}
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
+  .stat-box{background:var(--deep);border:1px solid var(--border);padding:8px 6px;text-align:center;border-radius:2px;}
+  .stat-label{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:3px;}
+  .stat-value{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--accent);}
+  .stat-sub{font-size:8px;color:var(--dim);font-family:'Share Tech Mono',monospace;}
+  .trade-codes{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+  .trade-tag{padding:3px 7px;background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.22);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:9px;border-radius:2px;}
+  .desc-box{background:var(--deep);border:1px solid var(--border);padding:10px;border-radius:2px;font-size:11px;line-height:1.7;color:var(--text);max-height:95px;overflow-y:auto;}
+
+  /* TEXTURE PANEL */
+  .tex-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px;}
+  .tex-slot{border:1px dashed var(--border);border-radius:3px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;background:var(--deep);min-height:66px;}
+  .tex-slot:hover{border-color:var(--gold);box-shadow:0 0 12px rgba(255,209,102,0.18);}
+  .tex-slot.loaded{border-style:solid;border-color:rgba(255,209,102,0.5);}
+  .tex-slot.active-tex{border-color:var(--accent)!important;border-style:solid!important;box-shadow:0 0 14px rgba(0,200,255,0.3)!important;}
+  .tex-slot img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:2px;opacity:0.65;}
+  .tex-label{position:relative;z-index:1;font-family:'Share Tech Mono',monospace;font-size:7.5px;color:var(--dim);text-align:center;padding:2px;line-height:1.4;}
+  .tex-slot.loaded .tex-label,.tex-slot.active-tex .tex-label{color:var(--gold);text-shadow:0 0 6px rgba(255,209,102,0.5);background:rgba(0,0,0,0.65);border-radius:2px;padding:2px 4px;}
+  .tex-slot.active-tex .tex-label{color:var(--accent);}
+  .tex-plus{font-size:16px;color:var(--border);margin-bottom:3px;}
+  .tex-info{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);margin-top:8px;line-height:1.7;}
+  .tex-info span{color:var(--gold);}
+  .tex-actions{display:flex;gap:7px;margin-top:9px;}
+  #handoutCanvas{display:block;width:100%;border:1px solid var(--border);border-radius:3px;margin-bottom:12px;}
+  .btn-row{display:flex;gap:8px;}
+  .info-bar{background:rgba(0,200,255,0.04);border:1px solid rgba(0,200,255,0.14);padding:9px 11px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--dim);border-radius:2px;margin-bottom:13px;line-height:1.7;}
+  .info-bar span{color:var(--accent);}
+  @keyframes flicker{0%,100%{opacity:1}50%{opacity:0.45}}
+  .rolling{animation:flicker 0.22s ease 6;}
+</style>
+</head>
+<body>
+
+<section class="section">
+
+<canvas id="starfield"></canvas>
+<div class="container">
+  <header>
+    <div class="title-sub">IMPERIAL SURVEY CORPS — FIELD TERMINAL v4.1</div>
+    <h1>PLANET DATA RECORDER</h1>
+    <div class="title-ver">MONGOOSE TRAVELLER 2E // WORLD GENERATION SYSTEM</div>
+  </header>
+
+  <div class="main-grid">
+    <!-- ══ LEFT COLUMN ══ -->
+    <div>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('auto')">AUTO-GENERATE</div>
+        <div class="tab" onclick="switchTab('manual')">MANUAL ENTRY</div>
+      </div>
+
+      <!-- AUTO -->
+      <div id="tab-auto">
+        <div class="panel">
+          <div class="panel-title">AUTO GENERATION</div>
+          <div class="info-bar">Rolls <span>2D6</span> for all characteristics per <span>Mongoose 2E</span> rules. Trade codes and tech level calculated automatically.</div>
+          <div class="form-grid">
+            <div class="form-group full"><label>World Name</label><input type="text" id="auto-name" placeholder="Leave blank for random"></div>
+            <div class="form-group full"><label>Sector / Subsector</label><input type="text" id="auto-sector" placeholder="e.g. Spinward Marches / Regina"></div>
+            <div class="form-group"><label>Hex Coordinates</label><input type="text" id="auto-hex" placeholder="e.g. 0304"></div>
+            <div class="form-group"><label>Stellar Type</label>
+              <select id="auto-star">
+                <option value="">Random</option>
+                <option value="G2 V">G2 V (Sol-type)</option>
+                <option value="K4 V">K4 V (Orange Dwarf)</option>
+                <option value="M3 V">M3 V (Red Dwarf)</option>
+                <option value="F6 V">F6 V (Yellow-White)</option>
+                <option value="A3 V">A3 V (White)</option>
+                <option value="M8 III">M8 III (Red Giant)</option>
+              </select>
+            </div>
+          </div>
+          <br>
+          <button class="btn" onclick="autoGenerate()" id="gen-btn">◈ GENERATE WORLD</button>
+        </div>
+        <div class="panel" id="stats-panel" style="margin-top:14px;display:none;">
+          <div class="panel-title">WORLD PROFILE</div>
+          <div class="uwp-display" id="uwp-out">—</div>
+          <div class="stats-grid" id="stats-grid"></div>
+          <div class="trade-codes" id="trade-codes"></div>
+          <div class="desc-box" id="world-desc"></div>
+        </div>
+      </div>
+
+      <!-- MANUAL -->
+      <div id="tab-manual" style="display:none;">
+        <div class="panel orange">
+          <div class="panel-title">MANUAL ENTRY</div>
+          <div class="form-grid">
+            <div class="form-group full"><label>World Name</label><input type="text" id="m-name" placeholder="World designation"></div>
+            <div class="form-group"><label>Sector</label><input type="text" id="m-sector" placeholder="Sector name"></div>
+            <div class="form-group"><label>Hex</label><input type="text" id="m-hex" placeholder="0304"></div>
+            <div class="form-group"><label>Starport</label>
+              <select id="m-starport">
+                <option value="A">A — Excellent</option><option value="B">B — Good</option>
+                <option value="C">C — Routine</option><option value="D">D — Poor</option>
+                <option value="E">E — Frontier</option><option value="X">X — None</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Size (0–A)</label>
+              <select id="m-size">
+                <option value="0">0 — Asteroid</option><option value="1">1 — 1600km</option>
+                <option value="2">2 — 3200km</option><option value="3">3 — 4800km</option>
+                <option value="4">4 — 6400km</option><option value="5">5 — 8000km</option>
+                <option value="6" selected>6 — 9600km</option><option value="7">7 — 11200km</option>
+                <option value="8">8 — 12800km</option><option value="9">9 — 14400km</option>
+                <option value="10">A — 16000km</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Atmosphere (0–F)</label>
+              <select id="m-atmo">
+                <option value="0">0 — None</option><option value="1">1 — Trace</option>
+                <option value="2">2 — Very Thin/Tainted</option><option value="3">3 — Very Thin</option>
+                <option value="4">4 — Thin/Tainted</option><option value="5">5 — Thin</option>
+                <option value="6" selected>6 — Standard</option><option value="7">7 — Standard/Tainted</option>
+                <option value="8">8 — Dense</option><option value="9">9 — Dense/Tainted</option>
+                <option value="10">A — Exotic</option><option value="11">B — Corrosive</option>
+                <option value="12">C — Insidious</option><option value="13">D — Very Dense</option>
+                <option value="14">E — Ellipsoid</option><option value="15">F — Thin Low</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Hydrographics (0–A)</label>
+              <select id="m-hydro">
+                <option value="0">0 — Desert (0%)</option><option value="1">1 — 10%</option>
+                <option value="2">2 — 20%</option><option value="3">3 — 30%</option>
+                <option value="4">4 — 40%</option><option value="5">5 — 50%</option>
+                <option value="6">6 — 60%</option><option value="7" selected>7 — 70%</option>
+                <option value="8">8 — 80%</option><option value="9">9 — 90%</option>
+                <option value="10">A — Water World</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Population (0–C)</label>
+              <select id="m-pop">
+                <option value="0">0 — Barren</option><option value="1">1 — Few</option>
+                <option value="2">2 — Hundreds</option><option value="3">3 — Thousands</option>
+                <option value="4">4 — Tens of K</option><option value="5">5 — Hundreds of K</option>
+                <option value="6" selected>6 — Millions</option><option value="7">7 — Tens of M</option>
+                <option value="8">8 — Hundreds of M</option><option value="9">9 — Billions</option>
+                <option value="10">A — Tens of B</option><option value="11">B — Hundreds of B</option>
+                <option value="12">C — Trillions</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Government (0–F)</label>
+              <select id="m-gov">
+                <option value="0">0 — None</option><option value="1">1 — Corporation</option>
+                <option value="2">2 — Participatory Democracy</option><option value="3">3 — Oligarchy</option>
+                <option value="4">4 — Rep. Democracy</option><option value="5">5 — Feudal Technocracy</option>
+                <option value="6" selected>6 — Captive Gov.</option><option value="7">7 — Balkanised</option>
+                <option value="8">8 — Civil Service Bureau.</option><option value="9">9 — Impersonal Bureau.</option>
+                <option value="10">A — Charismatic Dictator</option><option value="11">B — Non-Charismatic Leader</option>
+                <option value="12">C — Charismatic Oligarchy</option><option value="13">D — Religious Dictatorship</option>
+                <option value="14">E — Religious Autocracy</option><option value="15">F — Totalitarian Oligarchy</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Law Level (0–9)</label>
+              <select id="m-law">
+                <option value="0">0 — No Law</option><option value="1">1</option><option value="2">2</option>
+                <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                <option value="6" selected>6</option><option value="7">7</option><option value="8">8</option>
+                <option value="9">9 — Total Control</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Tech Level (0–F)</label>
+              <select id="m-tech">
+                <option value="0">0 — Stone Age</option><option value="1">1 — Bronze Age</option>
+                <option value="2">2 — Iron Age</option><option value="3">3 — Medieval</option>
+                <option value="4">4 — Age of Sail</option><option value="5">5 — Industrial</option>
+                <option value="6">6 — Nuclear Age</option><option value="7">7 — Miniaturisation</option>
+                <option value="8" selected>8 — Quality</option><option value="9">9 — Exotic</option>
+                <option value="10">A — Interstellar</option><option value="11">B — Lower Imperial</option>
+                <option value="12">C — Imperial Avg</option><option value="13">D — Above Imperial</option>
+                <option value="14">E — High Imperial</option><option value="15">F — Supreme</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Stellar Type</label><input type="text" id="m-star" placeholder="e.g. G2 V"></div>
+            <div class="form-group full"><label>Bases (N=Naval S=Scout R=Research T=TAS)</label><input type="text" id="m-bases" placeholder="e.g. N S"></div>
+            <div class="form-group full"><label>Referee Notes</label><textarea id="m-notes" placeholder="Trade hub, restricted zone, notable features..."></textarea></div>
+          </div>
+          <br>
+          <button class="btn btn-orange" onclick="manualGenerate()">◈ BUILD HANDOUT</button>
+        </div>
+      </div>
+
+      <!-- TEXTURE LOADER -->
+      <div class="panel gold" style="margin-top:16px;">
+        <div class="panel-title">◆ PLANET TEXTURES</div>
+        <div class="tex-info">
+          Click a slot to load an image. <span>Active slot</span> (highlighted blue) is used on the handout.<br>
+          Works with any JPG/PNG — NASA imagery, Stable Diffusion planets, anything.
+        </div>
+        <div class="tex-grid" id="texture-grid"></div>
+        <div class="tex-actions">
+          <button class="btn btn-sm" style="color:var(--dim);border-color:var(--dim);" onclick="clearActiveTexture()">✕ CLEAR ACTIVE</button>
+          <button class="btn btn-sm" style="color:var(--gold);border-color:var(--gold);background:rgba(255,209,102,0.06);" onclick="reRender()">↻ RE-RENDER</button>
+        </div>
+        <input type="file" id="tex-file-input" accept="image/*" style="display:none;">
+      </div>
+    </div>
+
+    <!-- ══ RIGHT COLUMN ══ -->
+    <div>
+      <div class="panel">
+        <div class="panel-title">HANDOUT PREVIEW</div>
+        <canvas id="handoutCanvas" width="840" height="580"></canvas>
+        <div class="btn-row">
+          <button class="btn btn-green" onclick="downloadHandout('png')" style="flex:1;">↓ SAVE PNG</button>
+          <button class="btn" onclick="downloadHandout('jpg')" style="flex:1;">↓ SAVE JPG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<script>
+// ══════════════════════════════════════════════════════════
+// STARFIELD BG
+// ══════════════════════════════════════════════════════════
+const sfc=document.getElementById('starfield'),sCtx=sfc.getContext('2d');
+let sStars=[];
+function initSF(){sfc.width=innerWidth;sfc.height=innerHeight;sStars=[];for(let i=0;i<280;i++)sStars.push({x:Math.random()*sfc.width,y:Math.random()*sfc.height,r:Math.random()*1.2,a:Math.random(),s:Math.random()*0.003+0.001});}
+function drawSF(){sCtx.clearRect(0,0,sfc.width,sfc.height);sStars.forEach(s=>{s.a+=s.s;sCtx.beginPath();sCtx.arc(s.x,s.y,s.r,0,Math.PI*2);sCtx.fillStyle=`rgba(200,224,255,${0.18+0.52*Math.abs(Math.sin(s.a))})`;sCtx.fill();});requestAnimationFrame(drawSF);}
+window.addEventListener('resize',initSF);initSF();drawSF();
+
+// ══════════════════════════════════════════════════════════
+// TEXTURE SYSTEM
+// ══════════════════════════════════════════════════════════
+const SLOTS=[
+  {id:'terran', label:'TERRAN\nEarth-like'},
+  {id:'ocean',  label:'OCEAN\nWater World'},
+  {id:'desert', label:'DESERT\nArid World'},
+  {id:'ice',    label:'ICE\nFrozen World'},
+  {id:'gas',    label:'GAS GIANT\nJovian'},
+  {id:'lava',   label:'LAVA\nVolcanic'},
+  {id:'barren', label:'BARREN\nRock/Vacuum'},
+  {id:'exotic', label:'EXOTIC\nAlien World'},
+];
+let texStore={};
+let activeTexId=null;
+let pendingSlotId=null;
+
+function buildTexGrid(){
+  const g=document.getElementById('texture-grid');g.innerHTML='';
+  SLOTS.forEach(sl=>{
+    const el=document.createElement('div');
+    const loaded=!!texStore[sl.id];
+    const active=activeTexId===sl.id;
+    el.className='tex-slot'+(loaded?' loaded':'')+(active?' active-tex':'');
+    el.id='ts-'+sl.id;
+    el.onclick=()=>onSlotClick(sl.id);
+    const lbl=sl.label.replace('\n','<br>');
+    if(loaded){el.innerHTML=`<img src="${texStore[sl.id].url}"><div class="tex-label">${lbl}</div>`;}
+    else{el.innerHTML=`<div class="tex-plus">+</div><div class="tex-label">${lbl}</div>`;}
+    g.appendChild(el);
+  });
+}
+
+function onSlotClick(id){
+  if(texStore[id]){
+    activeTexId=(activeTexId===id)?null:id;
+    buildTexGrid();
+    if(currentWorld) renderHandout(currentWorld);
+  } else {
+    pendingSlotId=id;
+    document.getElementById('tex-file-input').click();
+  }
+}
+
+document.getElementById('tex-file-input').addEventListener('change',function(){
+  const file=this.files[0];if(!file||!pendingSlotId)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      texStore[pendingSlotId]={url:e.target.result,img};
+      activeTexId=pendingSlotId;
+      buildTexGrid();
+      if(currentWorld) renderHandout(currentWorld);
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+  this.value='';
+});
+
+function clearActiveTexture(){activeTexId=null;buildTexGrid();if(currentWorld)renderHandout(currentWorld);}
+function reRender(){if(currentWorld)renderHandout(currentWorld);}
+buildTexGrid();
+
+function autoPickTex(w){
+  if(activeTexId&&texStore[activeTexId]) return texStore[activeTexId].img;
+  const tryOrder=[];
+  if(w.size===0) tryOrder.push('barren');
+  else if(w.atmo>=11) tryOrder.push('lava','exotic');
+  else if(w.atmo===0) tryOrder.push('barren');
+  else if(w.hydro>=8) tryOrder.push('ocean','terran');
+  else if(w.hydro>=4&&w.atmo>=5&&w.atmo<=8) tryOrder.push('terran');
+  else if(w.hydro<=1) tryOrder.push('desert');
+  if(w.size>=9) tryOrder.push('gas');
+  tryOrder.push('barren','desert','terran','lava','exotic','ocean','ice','gas');
+  for(const id of tryOrder){if(texStore[id]) return texStore[id].img;}
+  return null;
+}
+
+// ══════════════════════════════════════════════════════════
+// MONGOOSE 2E RULES
+// ══════════════════════════════════════════════════════════
+function d6(n=1){let t=0;for(let i=0;i<n;i++)t+=Math.floor(Math.random()*6)+1;return t;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function toHex(n){return n.toString(16).toUpperCase();}
+
+const SPT=['X','X','E','E','D','D','C','C','B','B','A','A','A'];
+function rollSP(){return SPT[clamp(d6(2),2,12)];}
+function rollSZ(){return clamp(d6(2)-2,0,10);}
+function rollAT(sz){return sz===0?0:clamp(d6(2)-7+sz,0,15);}
+function rollHY(sz,at){if(sz<=1)return 0;let h=d6(2)-7+at;if([0,1,10,11,12].includes(at))h-=4;if(at>=13)h-=2;return clamp(h,0,10);}
+function rollPO(){return clamp(d6(2)-2,0,12);}
+function rollGO(po){return clamp(d6(2)-7+po,0,15);}
+function rollLA(go){return clamp(d6(2)-7+go,0,9);}
+function rollTL(sp,sz,at,hy,po,go){
+  let tl=d6(1);
+  if(sp==='A')tl+=6;else if(sp==='B')tl+=4;else if(sp==='C')tl+=2;else if(sp==='X')tl-=4;
+  if(sz<=1)tl+=2;else if(sz<=4)tl+=1;
+  if(at<=3||at>=10)tl+=1;
+  if(hy===9)tl+=1;else if(hy>=10)tl+=2;
+  if(po>=1&&po<=5)tl+=1;else if(po===9)tl+=2;else if(po>=10)tl+=4;
+  if(go===0||go===5)tl+=1;if(go===7)tl+=2;if(go>=13)tl-=2;
+  return clamp(tl,0,15);
+}
+function rollBases(sp){
+  let b='';
+  if(['A','B'].includes(sp)&&d6(2)>=8)b+='N';
+  if(['A','B','C','D'].includes(sp)){const n={A:10,B:9,C:8,D:7}[sp];if(d6(2)>=n)b+=(b?' ':'')+'S';}
+  if(['A','B'].includes(sp)&&d6(2)>=10)b+=(b?' ':'')+'R';
+  if(['A','B','C'].includes(sp)&&d6(2)>=9)b+=(b?' ':'')+'T';
+  return b;
+}
+const STARS=['G2 V','G8 V','K3 V','K7 V','M1 V','M4 V','F5 V','F9 V','A7 V','M2 III','K4 IV'];
+function rollStar(){return STARS[Math.floor(Math.random()*STARS.length)];}
+const NAMES=['Aramis','Dinomeen','Yori','Pavabid','Rhylanor','Porozlo','Hefry','Celepina','Jae Tellona','Loneseda','Valhalla','Enos','Wardn','Frenzie','Kinorb','Shionthy','Zivije','Garrincski','Mongo','Corfu','Tureded','Gileden','Nexine','Kolan','Treece','Bevey','Zykoca','Algebaster','Rugbird','Nerewhon','Heya','Enope','Forboldn','Gyomar','Squallia','Tionale','Henoz','Heroni','Byret','Jesedipere'];
+function rollName(){return NAMES[Math.floor(Math.random()*NAMES.length)];}
+
+function tradeCodes(at,hy,po,go,la,sz,tl){
+  const c=[];
+  if(at>=4&&at<=9&&hy>=4&&hy<=8&&po>=5&&po<=7)c.push('Ag');
+  if(sz===0&&at===0&&hy===0)c.push('As');
+  if(po===0&&go===0&&la===0)c.push('Ba');
+  if(at>=2&&hy===0)c.push('De');
+  if(at>=10&&hy>=1)c.push('Fl');
+  if((at===5||at===6||at===8)&&hy>=5&&hy<=7&&po>=4&&po<=8)c.push('Ga');
+  if(po>=9)c.push('Hi');
+  if(tl>=12)c.push('Ht');
+  if(at<=1&&hy>=1)c.push('Ic');
+  if([0,1,2,4,7,9].includes(at)&&po>=9)c.push('In');
+  if(po<=3)c.push('Lo');
+  if(tl<=5)c.push('Lt');
+  if(at<=3&&hy<=3&&po>=6)c.push('Na');
+  if(po>=4&&po<=6)c.push('Ni');
+  if(at>=2&&at<=5&&hy<=3)c.push('Po');
+  if((at===6||at===8)&&hy>=6&&hy<=10&&po>=6&&po<=8)c.push('Ri');
+  if(hy===10)c.push('Wa');
+  if(at===0)c.push('Va');
+  return c;
+}
+
+const ATMO_DESC=['No atmosphere — vacuum suit required','Trace atmosphere — full suit required','Very thin, tainted — filter respirator','Very thin — compressed air required','Thin, tainted — filter respirator','Thin — low pressure breathing','Standard — breathable without aid','Standard, tainted — filter recommended','Dense — high pressure, uncomfortable','Dense, tainted — filter required','Exotic — special breathing equipment','Corrosive — kills in minutes','Insidious — penetrates most protection','Very dense — crushing pressure','Ellipsoid — highly variable','Thin Low — unique conditions'];
+const GOV_DESC=['No governing authority','Corporate administration','Participatory democracy','Self-perpetuating oligarchy','Representative democracy','Feudal technocracy','Captive government','Balkanised states','Civil service bureaucracy','Impersonal bureaucracy','Charismatic dictator','Non-charismatic leader','Charismatic oligarchy','Religious dictatorship','Religious autocracy','Totalitarian oligarchy'];
+const HYDRO_PCT=[0,10,20,30,40,50,60,70,80,90,100];
+
+// ══════════════════════════════════════════════════════════
+// STATE + TABS
+// ══════════════════════════════════════════════════════════
+let currentWorld=null;
+function switchTab(t){
+  document.getElementById('tab-auto').style.display=t==='auto'?'block':'none';
+  document.getElementById('tab-manual').style.display=t==='manual'?'block':'none';
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='auto')||(i===1&&t==='manual')));
+}
+
+// ══════════════════════════════════════════════════════════
+// GENERATE
+// ══════════════════════════════════════════════════════════
+function autoGenerate(){
+  const btn=document.getElementById('gen-btn');
+  btn.classList.add('rolling');btn.textContent='◈ ROLLING DICE...';
+  setTimeout(()=>{
+    btn.classList.remove('rolling');btn.textContent='◈ GENERATE WORLD';
+    const name=document.getElementById('auto-name').value||rollName();
+    const sector=document.getElementById('auto-sector').value||'';
+    const hex=document.getElementById('auto-hex').value||pad2(d6(2)-2)+pad2(d6(2)-2);
+    const star=document.getElementById('auto-star').value||rollStar();
+    const sp=rollSP(),sz=rollSZ(),at=rollAT(sz),hy=rollHY(sz,at),po=rollPO(),go=rollGO(po),la=rollLA(go),tl=rollTL(sp,sz,at,hy,po,go),bases=rollBases(sp),tc=tradeCodes(at,hy,po,go,la,sz,tl);
+    currentWorld={name,sector,hex,star,starport:sp,size:sz,atmo:at,hydro:hy,pop:po,gov:go,law:la,tl,bases,tradeCodes:tc,notes:''};
+    showStats(currentWorld);renderHandout(currentWorld);
+  },520);
+}
+
+function manualGenerate(){
+  const g=id=>document.getElementById(id).value;
+  const gi=id=>parseInt(document.getElementById(id).value)||0;
+  const sp=g('m-starport'),sz=gi('m-size'),at=gi('m-atmo'),hy=gi('m-hydro'),po=gi('m-pop'),go=gi('m-gov'),la=gi('m-law'),tl=gi('m-tech');
+  currentWorld={name:g('m-name')||'Unknown World',sector:g('m-sector'),hex:g('m-hex'),star:g('m-star')||'—',starport:sp,size:sz,atmo:at,hydro:hy,pop:po,gov:go,law:la,tl,bases:g('m-bases'),tradeCodes:tradeCodes(at,hy,po,go,la,sz,tl),notes:g('m-notes')};
+  renderHandout(currentWorld);
+}
+
+function pad2(n){return String(Math.max(0,n)).padStart(2,'0');}
+function makeUWP(w){return `${w.starport}${toHex(w.size)}${toHex(w.atmo)}${toHex(w.hydro)}${toHex(w.pop)}${toHex(w.gov)}${toHex(w.law)}-${toHex(w.tl)}`;}
+function popLabel(p){return ['Barren','Tiny outpost','Hundreds','Thousands','Tens of thousands','Hundreds of thousands','Millions','Tens of millions','Hundreds of millions','Billions','Tens of billions','Hundreds of billions','Trillions'][Math.min(p,12)]||'';}
+function tlLabel(t){return ['Stone Age','Bronze Age','Iron Age','Medieval','Renaissance','Industrial','Nuclear','Miniaturisation','Quality','Exotic','Interstellar','Lower Imperial','Imperial Avg','Above Imperial','High Imperial','Supreme'][Math.min(t,15)]||'';}
+function spLabel(s){return {A:'Excellent',B:'Good',C:'Routine',D:'Poor',E:'Frontier',X:'None'}[s]||'';}
+function lawLabel(l){return l<=2?'Permissive':l<=5?'Moderate':l<=8?'Restrictive':'Severe';}
+
+function showStats(w){
+  document.getElementById('stats-panel').style.display='block';
+  document.getElementById('uwp-out').textContent=makeUWP(w);
+  const sg=document.getElementById('stats-grid');
+  const rows=[
+    ['SIZE',toHex(w.size),`${w.size===0?'<1000':w.size*1600}km`],
+    ['ATMO',toHex(w.atmo),(ATMO_DESC[w.atmo]||'').split('—')[0].trim().slice(0,18)],
+    ['HYDRO',toHex(w.hydro),`${HYDRO_PCT[Math.min(w.hydro,10)]}%`],
+    ['POP',toHex(w.pop),popLabel(w.pop).slice(0,14)],
+    ['GOV',toHex(w.gov),(GOV_DESC[Math.min(w.gov,15)]||'').split(' ').slice(0,2).join(' ')],
+    ['LAW',toHex(w.law),lawLabel(w.law)],
+    ['TL',toHex(w.tl),tlLabel(w.tl).slice(0,14)],
+    ['PORT',w.starport,spLabel(w.starport)],
+    ['BASES',w.bases||'—',''],
+  ];
+  sg.innerHTML=rows.map(([l,v,s])=>`<div class="stat-box"><span class="stat-label">${l}</span><div class="stat-value">${v}</div>${s?`<div class="stat-sub">${s}</div>`:''}</div>`).join('');
+  document.getElementById('trade-codes').innerHTML=w.tradeCodes.length?w.tradeCodes.map(c=>`<div class="trade-tag">${c}</div>`).join(''):`<span style="color:var(--dim);font-size:10px;font-family:'Share Tech Mono',monospace">No trade codes</span>`;
+  let d=`<strong style="color:var(--accent)">${w.name}</strong> — `;
+  d+=w.size===0?'Asteroid belt or very small body. ':` ~${w.size*1600}km diameter. `;
+  d+=(ATMO_DESC[w.atmo]||'')+'. ';
+  d+=`${HYDRO_PCT[Math.min(w.hydro,10)]}% surface liquid. ${popLabel(w.pop)} population. `;
+  d+=`${GOV_DESC[Math.min(w.gov,15)]}. Law ${toHex(w.law)}: ${lawLabel(w.law).toLowerCase()} restrictions. TL ${toHex(w.tl)} (${tlLabel(w.tl)}).`;
+  document.getElementById('world-desc').innerHTML=d;
+}
+
+// ══════════════════════════════════════════════════════════
+// HANDOUT CANVAS
+// ══════════════════════════════════════════════════════════
+const CW=840,CH=580;
+
+function renderHandout(w){
+  const canvas=document.getElementById('handoutCanvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=CW;canvas.height=CH;
+
+  // Background deep space
+  const bg=ctx.createLinearGradient(0,0,CW,CH);
+  bg.addColorStop(0,'#010306');bg.addColorStop(0.5,'#03080f');bg.addColorStop(1,'#010306');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,CW,CH);
+
+  // Starfield
+  const rng=seededRNG(w.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0)*31+w.size*17+w.atmo*7);
+  for(let i=0;i<200;i++){
+    const x=rng()*CW,y=rng()*CH,r=rng()*1.05;
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(200,218,255,${0.12+rng()*0.72})`;ctx.fill();
+  }
+  for(let i=0;i<10;i++){
+    const x=rng()*CW,y=rng()*CH,s=rng()*2+0.8,a=0.35+rng()*0.55;
+    ctx.strokeStyle=`rgba(210,228,255,${a})`;ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.moveTo(x-s,y);ctx.lineTo(x+s,y);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x,y-s);ctx.lineTo(x,y+s);ctx.stroke();
+  }
+
+  // Nebula wisps
+  const nHues=[[210,70],[30,65],[260,55],[120,50],[0,60],[180,65],[45,55],[300,50]];
+  const[nH,nS]=nHues[Math.min(w.atmo,7)];
+  for(let i=0;i<3;i++){
+    const gx=rng()*CW,gy=rng()*CH,gr=ctx.createRadialGradient(gx,gy,0,gx,gy,220+rng()*180);
+    gr.addColorStop(0,`hsla(${nH},${nS}%,55%,0.055)`);gr.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gr;ctx.fillRect(0,0,CW,CH);
+  }
+
+  // ── LAYOUT ──
+  const HDR=52, FTR=38, PAD=14;
+  const CONTENT_TOP=HDR+8, CONTENT_BOT=CH-FTR-8;
+
+  const PLANET_ZONE_W=Math.floor(CW*0.46);
+  const px=PLANET_ZONE_W/2;
+  const py=(CONTENT_TOP+CONTENT_BOT)/2 + 6;
+  const pr=118+w.size*3.8;
+
+  const DX=PLANET_ZONE_W+6, DW=CW-DX-PAD;
+  const DY=CONTENT_TOP, DH=CONTENT_BOT-CONTENT_TOP;
+
+  // Draw planet
+  const texImg=autoPickTex(w);
+  if(texImg){
+    drawTexturePlanet(ctx,w,px,py,pr,texImg,rng);
+  } else {
+    drawProceduralPlanet(ctx,w,px,py,pr,rng);
+  }
+
+  // Data panel background
+  ctx.fillStyle='rgba(2,5,13,0.87)';
+  roundRect(ctx,DX,DY,DW,DH,3);ctx.fill();
+  ctx.strokeStyle='rgba(0,200,255,0.16)';ctx.lineWidth=1;
+  roundRect(ctx,DX,DY,DW,DH,3);ctx.stroke();
+  ctx.fillStyle='rgba(0,200,255,0.45)';ctx.fillRect(DX,DY,2,DH);
+
+  drawDataBlock(ctx,w,DX+10,DY+8,DW-16,DH-12);
+
+  drawHeader(ctx,w,CW,HDR);
+  drawFrame(ctx,CW,CH);
+  drawFooter(ctx,w,CW,CH,FTR);
+}
+
+// ── TEXTURE PLANET ─────────────────────────────────────────
+function drawTexturePlanet(ctx,w,px,py,pr,img,rng){
+  const atmoHue=atmoH(w.atmo);
+  if(w.atmo>=1&&w.atmo<=12){
+    const pad=pr*0.32;
+    const ag=ctx.createRadialGradient(px,py,pr*0.82,px,py,pr+pad);
+    ag.addColorStop(0,`hsla(${atmoHue},78%,62%,0.60)`);
+    ag.addColorStop(0.45,`hsla(${atmoHue},68%,55%,0.22)`);
+    ag.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.arc(px,py,pr+pad,0,Math.PI*2);
+    ctx.fillStyle=ag;ctx.fill();
+  }
+
+  ctx.save();
+  ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);ctx.clip();
+
+  const sc=Math.max(pr*2/img.width,pr*2/img.height)*1.04;
+  const dw=img.width*sc,dh=img.height*sc;
+  ctx.drawImage(img,px-dw/2,py-dh/2,dw,dh);
+
+  const lx=px-pr*0.42, ly=py-pr*0.38;
+  const shad=ctx.createRadialGradient(lx,ly,pr*0.18,px+pr*0.5,py+pr*0.3,pr*1.38);
+  shad.addColorStop(0,'rgba(0,0,0,0)');
+  shad.addColorStop(0.32,'rgba(0,0,0,0)');
+  shad.addColorStop(0.68,'rgba(0,0,0,0.38)');
+  shad.addColorStop(1,'rgba(0,0,0,0.88)');
+  ctx.fillStyle=shad;ctx.fillRect(px-pr-1,py-pr-1,pr*2+2,pr*2+2);
+
+  const spec=ctx.createRadialGradient(lx,ly,0,lx,ly,pr*0.72);
+  spec.addColorStop(0,'rgba(255,255,255,0.13)');
+  spec.addColorStop(0.5,'rgba(255,255,255,0.04)');
+  spec.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=spec;ctx.fillRect(px-pr-1,py-pr-1,pr*2+2,pr*2+2);
+
+  if(w.hydro>=4){
+    const og=ctx.createRadialGradient(lx+pr*0.08,ly+pr*0.04,0,lx,ly,pr*0.45);
+    og.addColorStop(0,`rgba(160,215,255,${0.08+w.hydro*0.012})`);
+    og.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=og;ctx.fillRect(px-pr-1,py-pr-1,pr*2+2,pr*2+2);
+  }
+
+  ctx.restore();
+
+  if(w.atmo>=2&&w.atmo<=12){
+    ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);
+    ctx.strokeStyle=`hsla(${atmoHue},82%,72%,0.38)`;ctx.lineWidth=pr*0.042+2;ctx.stroke();
+    ctx.strokeStyle=`hsla(${atmoHue},75%,80%,0.10)`;ctx.lineWidth=pr*0.12+4;ctx.stroke();
+  }
+  ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();
+
+  if(w.size>=8&&rng()>0.42) drawRings(ctx,px,py,pr,rng,w);
+}
+
+// ── PROCEDURAL PLANET ──────────────────────────────────────
+function drawProceduralPlanet(ctx,w,px,py,pr,rng){
+  const ah=atmoH(w.atmo);
+  if(w.atmo>=1){
+    const ag=ctx.createRadialGradient(px,py,pr*0.78,px,py,pr*1.38);
+    ag.addColorStop(0,`hsla(${ah},75%,60%,0.48)`);
+    ag.addColorStop(0.5,`hsla(${ah},65%,55%,0.15)`);
+    ag.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.arc(px,py,pr*1.38,0,Math.PI*2);ctx.fillStyle=ag;ctx.fill();
+  }
+  ctx.save();ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);ctx.clip();
+
+  // ── noise primitives (seeded) ──────────────────────────
+  const ns=Math.floor(rng()*99991)+1;
+  function h2(ix,iy){let h=(ix*1619+iy*31337+ns*1013)|0;h^=h>>>13;h=((h*(h*15731+789221))+1376312589)|0;return(h&0x7fffffff)/0x7fffffff;}
+  function vn(x,y){const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,ux=fx*fx*(3-2*fx),uy=fy*fy*(3-2*fy);return h2(ix,iy)+(h2(ix+1,iy)-h2(ix,iy))*ux+(h2(ix,iy+1)-h2(ix,iy))*uy+(h2(ix,iy)-h2(ix+1,iy)-h2(ix,iy+1)+h2(ix+1,iy+1))*ux*uy;}
+  function fbm(x,y,o){let v=0,a=1,f=1,m=0;for(let i=0;i<o;i++){v+=vn(x*f,y*f)*a;m+=a;a*=0.5;f*=2.08;}return v/m;}
+
+  const palFn=planetPalette(w,rng);
+  const oceanThr=w.hydro>=1?1.04-(w.hydro/10)*0.92:-9999;
+  const hasPoles=w.hydro>=2&&w.atmo>=3;
+  const sc=2.6/pr;
+  const D=Math.ceil(pr)*2+2;
+  const off=document.createElement('canvas');off.width=D;off.height=D;
+  const oc=off.getContext('2d');
+  const id=oc.createImageData(D,D);const da=id.data;
+
+  for(let dy=0;dy<D;dy++){for(let dx=0;dx<D;dx++){
+    const nx=(dx-pr)*sc,ny=(dy-pr)*sc;
+    if(nx*nx+ny*ny>pr*pr*sc*sc)continue;
+    const lat=Math.abs(ny)/(pr*sc); // 0=equator → 1=pole
+
+    // domain warp → organic continent shapes
+    const wx=fbm(nx+0.3,ny+1.7,3),wy=fbm(nx+5.2,ny+3.4,3);
+    const wx2=fbm(nx+wx*1.6+2.8,ny+wy*1.6+1.2,3),wy2=fbm(nx+wx*1.6+7.1,ny+wy*1.6+4.9,3);
+    const tN=fbm(nx+wx2*1.8,ny+wy2*1.8,5);   // terrain elevation noise
+    const xN=fbm(nx*3.2+10.7,ny*3.2+7.3,4);   // fine texture noise
+
+    let r,g,b;
+    if(w.hydro>=1&&tN<oceanThr){
+      // ── ocean depth layers ─────────────────────────────
+      const d=(oceanThr-tN)/oceanThr;
+      if(d<0.04){r=130;g=195;b=210;}
+      else if(d<0.12){r=18;g=90;b=160;}
+      else{r=Math.round(6+d*12);g=Math.round(35+d*45);b=Math.round(110+d*90);}
+    }else{
+      // ── land: palette with noise texture ───────────────
+      [r,g,b]=palFn(tN,xN,lat,oceanThr);
+    }
+
+    // ── noise-warped polar ice caps ─────────────────────
+    if(hasPoles){
+      const pN=fbm(nx*2.1+33.7,ny*2.1+11.3,3);
+      const iceEdge=0.64+pN*0.22; // ragged, not a circle
+      if(lat>iceEdge){
+        const t=Math.min(1,(lat-iceEdge)/0.09);
+        r=Math.round(r+(218-r)*t);
+        g=Math.round(g+(236-g)*t);
+        b=Math.round(b+(255-b)*t);
+      }
+    }
+
+    const i4=(dy*D+dx)*4;da[i4]=r;da[i4+1]=g;da[i4+2]=b;da[i4+3]=255;
+  }}
+  oc.putImageData(id,0,0);
+  ctx.drawImage(off,px-pr-1,py-pr-1);
+
+  // ── craters for airless / thin-atmosphere worlds ────────
+  // atmo 0 = vacuum → dense cratering, large + small
+  // atmo 1 = trace  → moderate cratering
+  // atmo 2 = very thin → sparse small craters
+  // atmo 3+           → no craters (erosion wipes them)
+  // For worlds with water (hydro>=1) we evaluate the same
+  // domain-warped noise used for terrain to skip any crater
+  // whose centre falls inside an ocean cell.
+  if(w.atmo<=2 && w.size>0){
+    // Helper: returns true if canvas point (cx,cy) is below water
+    function isUnderwater(cx,cy){
+      if(w.hydro<1) return false;
+      const nx=(cx-px)*sc, ny=(cy-py)*sc;
+      const wx=fbm(nx+0.3,ny+1.7,3), wy=fbm(nx+5.2,ny+3.4,3);
+      const wx2=fbm(nx+wx*1.6+2.8,ny+wy*1.6+1.2,3);
+      const wy2=fbm(nx+wx*1.6+7.1,ny+wy*1.6+4.9,3);
+      const tN=fbm(nx+wx2*1.8,ny+wy2*1.8,5);
+      return tN < oceanThr;
+    }
+
+    // Per-atmosphere tier: [count_base, count_rng, large_frac, large_maxR, med_maxR, small_maxR, spread]
+    const tier = w.atmo===0
+      ? { base:55, extra:30, largeFrac:0.18, medFrac:0.35,
+          largeR:()=> rng()*pr*0.20 + pr*0.10,
+          medR:  ()=> rng()*pr*0.10 + pr*0.04,
+          smallR:()=> rng()*pr*0.05 + 2.2,
+          spread:0.90 }
+      : w.atmo===1
+      ? { base:22, extra:14, largeFrac:0.12, medFrac:0.30,
+          largeR:()=> rng()*pr*0.11 + pr*0.055,
+          medR:  ()=> rng()*pr*0.075 + pr*0.025,
+          smallR:()=> rng()*pr*0.05 + 2.0,
+          spread:0.84 }
+      : /* atmo===2 */
+        { base:5,  extra:5,  largeFrac:0.00, medFrac:0.20,
+          largeR:()=> rng()*pr*0.07 + pr*0.03,
+          medR:  ()=> rng()*pr*0.06 + 2.5,
+          smallR:()=> rng()*pr*0.04 + 1.8,
+          spread:0.76 };
+
+    const nC = tier.base + Math.floor(rng()*tier.extra);
+    let placed=0, attempts=0, maxAttempts=nC*8;
+
+    while(placed < nC && attempts < maxAttempts){
+      attempts++;
+      const ca=rng()*Math.PI*2;
+      const cd=rng()*pr*tier.spread;
+      const cx=px+Math.cos(ca)*cd, cy=py+Math.sin(ca)*cd;
+      if(isUnderwater(cx,cy)) continue;
+      const t=placed/nC;
+      const cr = t < tier.largeFrac ? tier.largeR()
+               : t < tier.medFrac   ? tier.medR()
+               :                      tier.smallR();
+      drawCrater(ctx,cx,cy,cr,rng);
+      placed++;
+    }
+  }
+
+  // ── hemisphere lighting ────────────────────────────────
+  const lx=px-pr*0.42,ly=py-pr*0.38;
+  const sh=ctx.createRadialGradient(lx,ly,pr*0.15,px+pr*0.48,py+pr*0.28,pr*1.38);
+  sh.addColorStop(0,'rgba(0,0,0,0)');sh.addColorStop(0.33,'rgba(0,0,0,0)');sh.addColorStop(0.7,'rgba(0,0,0,0.4)');sh.addColorStop(1,'rgba(0,0,0,0.88)');
+  ctx.fillStyle=sh;ctx.fillRect(px-pr-1,py-pr-1,pr*2+2,pr*2+2);
+  const sp=ctx.createRadialGradient(lx,ly,0,lx,ly,pr*0.58);
+  sp.addColorStop(0,'rgba(255,255,255,0.14)');sp.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=sp;ctx.fillRect(px-pr-1,py-pr-1,pr*2+2,pr*2+2);
+  ctx.restore();
+  if(w.atmo>=2){ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);ctx.strokeStyle=`hsla(${ah},80%,70%,0.32)`;ctx.lineWidth=pr*0.04+2;ctx.stroke();ctx.strokeStyle=`hsla(${ah},75%,78%,0.1)`;ctx.lineWidth=pr*0.12+4;ctx.stroke();}
+  ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;ctx.stroke();
+  if(w.size>=8&&rng()>0.42) drawRings(ctx,px,py,pr,rng,w);
+}
+
+// ── Crater renderer ──────────────────────────────────────
+// Light source is upper-left (same as planet shading).
+// A crater is a bowl: shadow on the bottom-right inner wall,
+// highlight on the top-left inner wall, raised bright rim on
+// the top-left outer edge, dark ejecta shadow on bottom-right.
+function drawCrater(ctx,cx,cy,cr,rng){
+  const pts=14+Math.floor(rng()*6); // number of polygon points
+  // Build an irregular outline: each point is perturbed radially
+  function craterPoly(radius,jitter){
+    const pts2=pts;
+    const arr=[];
+    for(let k=0;k<pts2;k++){
+      const a=(k/pts2)*Math.PI*2;
+      const r=radius*(0.82+rng()*jitter);
+      arr.push([cx+Math.cos(a)*r, cy+Math.sin(a)*r]);
+    }
+    return arr;
+  }
+  function polyPath(p){
+    ctx.beginPath();ctx.moveTo(p[0][0],p[0][1]);
+    for(let k=1;k<p.length;k++) ctx.lineTo(p[k][0],p[k][1]);
+    ctx.closePath();
+  }
+
+  const outerPoly=craterPoly(cr,0.36);
+  const innerPoly=craterPoly(cr*0.72,0.28);
+  const floorPoly=craterPoly(cr*0.48,0.22);
+
+  // 1. Ejecta blanket — very faint bright halo on upper-left, dark on lower-right
+  const ejG=ctx.createRadialGradient(cx-cr*0.18,cy-cr*0.18,cr*0.9,cx+cr*0.22,cy+cr*0.22,cr*1.55);
+  ejG.addColorStop(0,'rgba(255,255,255,0.07)');
+  ejG.addColorStop(0.42,'rgba(255,255,255,0.03)');
+  ejG.addColorStop(0.72,'rgba(0,0,0,0.05)');
+  ejG.addColorStop(1,'rgba(0,0,0,0)');
+  polyPath(craterPoly(cr*1.52,0.18));
+  ctx.fillStyle=ejG; ctx.fill();
+
+  // 2. Outer wall / rim — the raised ridge, bright on sun side
+  polyPath(outerPoly);
+  const rimG=ctx.createRadialGradient(cx-cr*0.3,cy-cr*0.3,cr*0.4,cx+cr*0.28,cy+cr*0.28,cr*1.1);
+  rimG.addColorStop(0,'rgba(255,255,255,0.18)');
+  rimG.addColorStop(0.38,'rgba(255,255,255,0.06)');
+  rimG.addColorStop(0.72,'rgba(0,0,0,0.22)');
+  rimG.addColorStop(1,'rgba(0,0,0,0.38)');
+  ctx.fillStyle=rimG; ctx.fill();
+
+  // 3. Inner wall — shadow bowl
+  polyPath(innerPoly);
+  const wallG=ctx.createRadialGradient(cx-cr*0.22,cy-cr*0.22,0,cx+cr*0.30,cy+cr*0.30,cr*0.88);
+  wallG.addColorStop(0,'rgba(255,255,255,0.05)');
+  wallG.addColorStop(0.35,'rgba(0,0,0,0.18)');
+  wallG.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle=wallG; ctx.fill();
+
+  // 4. Floor — flat darker area, slightly lighter in center (albedo)
+  polyPath(floorPoly);
+  const floorG=ctx.createRadialGradient(cx,cy,0,cx,cy,cr*0.5);
+  floorG.addColorStop(0,'rgba(0,0,0,0.28)');
+  floorG.addColorStop(0.5,'rgba(0,0,0,0.38)');
+  floorG.addColorStop(1,'rgba(0,0,0,0.48)');
+  ctx.fillStyle=floorG; ctx.fill();
+
+  // 5. Central peak for large craters (real geology!)
+  if(cr>14){
+    const pk=cr*0.07;
+    ctx.beginPath();ctx.arc(cx-pk*0.2,cy-pk*0.2,pk,0,Math.PI*2);
+    const pkG=ctx.createRadialGradient(cx-pk*0.5,cy-pk*0.5,0,cx,cy,pk*1.2);
+    pkG.addColorStop(0,'rgba(220,215,208,0.55)');
+    pkG.addColorStop(1,'rgba(160,155,148,0.1)');
+    ctx.fillStyle=pkG; ctx.fill();
+  }
+}
+
+// ── Planet palette factory ─────────────────────────────────
+// Returns a function (tN, xN, lat, oThr) => [r,g,b]
+function planetPalette(w,rng){
+  function lerp(a,b,t){return Math.round(a+(b-a)*Math.max(0,Math.min(1,t)));}
+  function lc(A,B,t){return[lerp(A[0],B[0],t),lerp(A[1],B[1],t),lerp(A[2],B[2],t)];}
+  function lc3(A,B,C,t){return t<0.5?lc(A,B,t*2):lc(B,C,(t-0.5)*2);}
+  function tex(base,xN,str){return base.map(v=>Math.max(0,Math.min(255,v+Math.round((xN-0.5)*str))));}
+
+  // ── Barren / vacuum ────────────────────────────────────
+  if(w.size===0||w.atmo<=1){
+    const variants=[
+      [[112,50,32],[78,36,22],[52,24,14]],   // Mars-red
+      [[100,93,85],[74,70,65],[50,48,44]],   // Moon grey
+      [[155,130,90],[118,98,68],[84,70,48]], // Sandy tan
+      [[40,38,36],[28,26,24],[20,18,16]],    // Dark basalt
+      [[118,88,118],[90,65,88],[62,44,62]],  // Purple mineral
+      [[80,100,108],[58,78,88],[40,58,68]],  // Blue-grey ice rock
+    ];
+    const[lo,mi,hi]=variants[Math.floor(rng()*variants.length)];
+    return (tN,xN)=>{
+      const t=xN*0.55+tN*0.45;
+      return tex(t<0.45?lc(lo,mi,t/0.45):lc(mi,hi,(t-0.45)/0.55),xN,18);
+    };
+  }
+
+  // ── Exotic / corrosive atmosphere ─────────────────────
+  if(w.atmo>=10){
+    const variants=[
+      {lo:[28,24,22],mi:[75,50,18],hi:[185,85,12],cr:[248,115,15]}, // volcanic
+      {lo:[48,58,15],mi:[105,118,28],hi:[168,172,42],cr:[215,205,38]}, // sulphur
+      {lo:[50,18,65],mi:[105,32,125],hi:[155,55,168],cr:[218,95,235]}, // alien violet
+      {lo:[18,40,35],mi:[35,95,80],hi:[55,155,125],cr:[80,220,175]},  // toxic teal
+    ];
+    const v=variants[Math.floor(rng()*variants.length)];
+    return (tN,xN)=>{
+      const lavaVein=xN>0.84&&tN>0.68;
+      if(lavaVein)return[v.cr[0],v.cr[1],v.cr[2]];
+      const t=tN*0.5+xN*0.5;
+      return tex(t<0.4?lc(v.lo,v.mi,t/0.4):lc(v.mi,v.hi,(t-0.4)/0.6),xN,22);
+    };
+  }
+
+  // ── Desert world ───────────────────────────────────────
+  if(w.hydro<=2&&w.atmo>=2){
+    const variants=[
+      [[178,88,52],[222,152,82],[248,208,138]], // Mars red-orange
+      [[192,172,128],[228,208,162],[252,238,208]], // Saharan tan
+      [[158,82,108],[202,118,138],[238,172,185]], // Alien rose-pink
+      [[125,120,112],[162,158,148],[198,194,186]], // Pale bone
+      [[188,108,42],[228,156,68],[250,202,118]], // Sienna amber
+      [[95,78,135],[138,115,178],[185,165,218]], // Dusty violet
+    ];
+    const[lo,mi,hi]=variants[Math.floor(rng()*variants.length)];
+    return (tN,xN)=>tex(lc3(lo,mi,hi,tN*0.6+xN*0.4),xN,26);
+  }
+
+  // ── Habitable world — richest variety ─────────────────
+  if(w.atmo>=4&&w.atmo<=9){
+    // Flora color variant — seeded so each world is consistent
+    const vegV=Math.floor(rng()*6);
+    //         lowland           midland            highland           peak
+    const V=[
+      {sh:[38,98,35],lo:[52,108,42],mi:[78,62,34],ro:[95,85,68],hi:[125,118,105]},  // Earth green
+      {sh:[162,100,22],lo:[178,112,28],mi:[135,88,38],ro:[105,82,58],hi:[128,118,98]}, // Amber alien
+      {sh:[28,102,90],lo:[38,115,100],mi:[50,78,68],ro:[62,75,72],hi:[102,112,118]},  // Blue-green
+      {sh:[125,38,82],lo:[138,48,92],mi:[100,52,65],ro:[80,65,72],hi:[108,98,104]},   // Purple-red flora
+      {sh:[165,135,42],lo:[182,152,48],mi:[128,98,44],ro:[105,88,60],hi:[130,120,102]}, // Ochre gold
+      {sh:[42,118,65],lo:[55,128,58],mi:[70,85,48],ro:[88,75,55],hi:[115,108,95]},   // Deep jungle
+    ][vegV];
+    return (tN,xN,lat,oThr)=>{
+      if(oThr<-100)oThr=0.1;
+      const landH=Math.max(0,Math.min(1,(tN-oThr)/(0.98-oThr)));
+      let base;
+      if(landH<0.08)base=lc(V.sh,V.lo,landH/0.08);
+      else if(landH<0.42)base=lc(V.lo,V.mi,(landH-0.08)/0.34);
+      else if(landH<0.72)base=lc(V.mi,V.ro,(landH-0.42)/0.30);
+      else base=lc(V.ro,V.hi,(landH-0.72)/0.28);
+      return tex(base,xN,24);
+    };
+  }
+
+  // ── Fallback ───────────────────────────────────────────
+  return (tN,xN)=>{const v=Math.round(72+tN*75+xN*28);return[v,v,v];};
+}
+
+function drawRings(ctx,px,py,pr,rng,w){
+  ctx.save();ctx.translate(px,py);ctx.scale(1,0.27);
+  const ri=pr*1.22,ro=pr*1.88;
+  const rh=w.hydro>5?210:w.atmo>=5?40:15;
+  const rg=ctx.createRadialGradient(0,0,ri,0,0,ro);
+  rg.addColorStop(0,`hsla(${rh},28%,68%,0)`);
+  rg.addColorStop(0.22,`hsla(${rh},28%,68%,0.28)`);
+  rg.addColorStop(0.58,`hsla(${rh},24%,62%,0.18)`);
+  rg.addColorStop(1,`hsla(${rh},18%,58%,0)`);
+  ctx.beginPath();ctx.arc(0,0,ro,0,Math.PI*2);ctx.arc(0,0,ri,0,Math.PI*2,true);
+  ctx.fillStyle=rg;ctx.fill();ctx.restore();
+}
+
+function atmoH(a){return[0,0,32,46,192,132,212,202,218,36,66,0,0,264,292,172][Math.min(a,15)];}
+
+
+// ══════════════════════════════════════════════════════════
+// DATA BLOCK — REDESIGNED FOR LEGIBILITY & VISUAL IMPACT
+// ══════════════════════════════════════════════════════════
+function drawDataBlock(ctx, w, bx, by, bw, bh) {
+  let y = by;
+
+  // ── UWP BLOCK ──────────────────────────────────────────
+  // Background box for UWP
+  ctx.fillStyle = 'rgba(255,209,102,0.06)';
+  roundRect(ctx, bx-4, y, bw+4, 48, 2); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,209,102,0.22)'; ctx.lineWidth = 1;
+  roundRect(ctx, bx-4, y, bw+4, 48, 2); ctx.stroke();
+
+  tt(ctx, 'UNIVERSAL WORLD PROFILE', bx+2, y+11, 'rgba(255,209,102,0.55)', '9px "Share Tech Mono"');
+  tt(ctx, makeUWP(w), bx+2, y+38, '#ffd166', 'bold 24px "Share Tech Mono"');
+
+  // UWP character labels
+  const uwpKeys = ['PORT','SZ','ATM','HYD','POP','GOV','LAW','','TL'];
+  const uwpStr = makeUWP(w).replace('-','');
+  let kx = bx + 2;
+  uwpKeys.forEach((k, i) => {
+    if (k === '') { kx += 12; return; }
+    const ch = uwpStr[i] || '';
+    const cw2 = ctx.measureText(ch).width + 4;
+    tt(ctx, k, kx, y+48, 'rgba(255,209,102,0.35)', '7px "Share Tech Mono"');
+    kx += 18;
+  });
+
+  y += 58;
+
+  // ── DIVIDER ────────────────────────────────────────────
+  const divY = y;
+  ctx.strokeStyle = 'rgba(0,200,255,0.2)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(bx-4, divY); ctx.lineTo(bx+bw, divY); ctx.stroke();
+  y += 8;
+
+  // ── STAT ROWS ──────────────────────────────────────────
+  // Define row color themes per category
+  const rowDefs = [
+    { label:'STARPORT', val:w.starport,     sub:spLabel(w.starport),                            col:'#00c8ff', icon:'◈' },
+    { label:'SIZE',     val:toHex(w.size),  sub:`${w.size===0?'<1000':w.size*1600} km`,         col:'#7ecfff', icon:'◉' },
+    { label:'ATMO',     val:toHex(w.atmo),  sub:(ATMO_DESC[w.atmo]||'').split('—')[0].trim(),   col:atmoColor(w.atmo), icon:'◎' },
+    { label:'HYDRO',    val:toHex(w.hydro), sub:`${HYDRO_PCT[Math.min(w.hydro,10)]}% water`,    col:'#4facff', icon:'◐' },
+    { label:'POP',      val:toHex(w.pop),   sub:popLabel(w.pop),                                col:'#ffd166', icon:'◆' },
+    { label:'GOV',      val:toHex(w.gov),   sub:(GOV_DESC[Math.min(w.gov,15)]||''),             col:'#ff9a5c', icon:'◇' },
+    { label:'LAW',      val:toHex(w.law),   sub:lawLabel(w.law),                                col:lawColor(w.law),  icon:'◈' },
+    { label:'TL',       val:toHex(w.tl),    sub:tlLabel(w.tl),                                  col:'#39ff9a', icon:'◉' },
+  ];
+
+  const rowH = Math.min(46, Math.floor((bh - 130) / rowDefs.length));
+  const BADGE_W = 30, BADGE_H = rowH - 8;
+  const TEXT_X = bx + BADGE_W + 10;
+  const TEXT_W = bw - BADGE_W - 12;
+
+  rowDefs.forEach((row, i) => {
+    if (y + rowH > by + bh - 60) return;
+    const ry = y + 1;
+
+    // Alternating subtle row bg
+    if (i % 2 === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.025)';
+      ctx.fillRect(bx - 4, ry, bw + 4, rowH - 2);
+    }
+
+    // Left color accent bar
+    ctx.fillStyle = row.col;
+    ctx.globalAlpha = 0.7;
+    ctx.fillRect(bx - 4, ry, 3, rowH - 2);
+    ctx.globalAlpha = 1;
+
+    // Value badge
+    ctx.fillStyle = hexToRgba(row.col, 0.12);
+    roundRect(ctx, bx + 1, ry + (rowH - BADGE_H) / 2 - 1, BADGE_W, BADGE_H, 2);
+    ctx.fill();
+    ctx.strokeStyle = hexToRgba(row.col, 0.4);
+    ctx.lineWidth = 1;
+    roundRect(ctx, bx + 1, ry + (rowH - BADGE_H) / 2 - 1, BADGE_W, BADGE_H, 2);
+    ctx.stroke();
+
+    // Value text in badge (centered)
+    const badgeCX = bx + 1 + BADGE_W / 2;
+    const badgeCY = ry + rowH / 2 + 1;
+    tt(ctx, row.val, badgeCX, badgeCY + 1, row.col, 'bold 15px "Orbitron"', 'center');
+
+    // Label
+    tt(ctx, row.label, TEXT_X, ry + rowH * 0.38, 'rgba(100,150,190,0.85)', '9px "Share Tech Mono"');
+
+    // Sub text — truncate to fit
+    const maxChars = Math.floor(TEXT_W / 6.2);
+    const subText = (row.sub || '').length > maxChars ? (row.sub||'').slice(0, maxChars - 1) + '…' : (row.sub || '');
+    tt(ctx, subText, TEXT_X, ry + rowH * 0.75, 'rgba(200,220,238,0.88)', '11px "Share Tech Mono"');
+
+    y += rowH;
+  });
+
+  // ── LAW LEVEL BAR ──────────────────────────────────────
+  // Visual bar for law level
+  if (y + 18 < by + bh - 44) {
+    y += 4;
+    const barW = bw - 2;
+    const segments = 9;
+    const segW = Math.floor(barW / segments);
+    tt(ctx, 'LAW LEVEL INDICATOR', bx - 2, y + 9, 'rgba(60,100,140,0.7)', '8px "Share Tech Mono"');
+    y += 12;
+    for (let s = 0; s < segments; s++) {
+      const filled = s < w.law;
+      const lc = s <= 2 ? '#39ff9a' : s <= 5 ? '#ffd166' : '#ff4444';
+      ctx.fillStyle = filled ? hexToRgba(lc, 0.65) : 'rgba(255,255,255,0.04)';
+      ctx.strokeStyle = filled ? hexToRgba(lc, 0.9) : 'rgba(255,255,255,0.1)';
+      ctx.lineWidth = 0.5;
+      ctx.fillRect(bx - 2 + s * (segW + 1), y, segW, 11);
+      ctx.strokeRect(bx - 2 + s * (segW + 1), y, segW, 11);
+    }
+    y += 17;
+  }
+
+  // ── BOTTOM ROW: STAR + BASES ────────────────────────────
+  if (y + 26 < by + bh - 24) {
+    ctx.strokeStyle = 'rgba(0,200,255,0.18)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(bx - 4, y); ctx.lineTo(bx + bw, y); ctx.stroke();
+    y += 8;
+
+    const halfW = (bw) / 2;
+    if (w.star) {
+      tt(ctx, 'PRIMARY STAR', bx, y + 10, 'rgba(60,100,140,0.8)', '8px "Share Tech Mono"');
+      tt(ctx, w.star, bx, y + 23, '#ffd166', 'bold 12px "Share Tech Mono"');
+    }
+    if (w.bases) {
+      const bBaseX = bx + halfW;
+      tt(ctx, 'FACILITIES', bBaseX, y + 10, 'rgba(60,100,140,0.8)', '8px "Share Tech Mono"');
+      tt(ctx, w.bases, bBaseX, y + 23, '#ff6b35', 'bold 12px "Share Tech Mono"');
+    }
+    y += 30;
+  }
+
+  // ── TRADE CODES ────────────────────────────────────────
+  if (w.tradeCodes && w.tradeCodes.length && y + 28 < by + bh - 2) {
+    ctx.strokeStyle = 'rgba(0,200,255,0.18)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(bx - 4, y); ctx.lineTo(bx + bw, y); ctx.stroke();
+    y += 7;
+    tt(ctx, 'TRADE CODES', bx, y + 10, 'rgba(60,100,140,0.8)', '8px "Share Tech Mono"');
+    y += 14;
+    let tx = bx - 2;
+    w.tradeCodes.forEach(tc => {
+      const tagW = 30;
+      if (tx + tagW > bx + bw - 2) return;
+      ctx.fillStyle = 'rgba(0,200,255,0.1)';
+      roundRect(ctx, tx, y, tagW, 16, 2); ctx.fill();
+      ctx.strokeStyle = 'rgba(0,200,255,0.4)'; ctx.lineWidth = 0.8;
+      roundRect(ctx, tx, y, tagW, 16, 2); ctx.stroke();
+      tt(ctx, tc, tx + tagW / 2, y + 12, '#00c8ff', 'bold 9px "Share Tech Mono"', 'center');
+      tx += tagW + 4;
+    });
+    y += 20;
+  }
+
+  // ── NOTES ──────────────────────────────────────────────
+  if (w.notes && y + 22 < by + bh) {
+    ctx.fillStyle = 'rgba(255,107,53,0.07)';
+    ctx.fillRect(bx - 4, y, bw + 4, by + bh - y - 1);
+    ctx.strokeStyle = 'rgba(255,107,53,0.22)'; ctx.lineWidth = 0.5;
+    ctx.strokeRect(bx - 4, y, bw + 4, by + bh - y - 1);
+    tt(ctx, 'REFEREE NOTES', bx, y + 11, 'rgba(255,107,53,0.65)', '8px "Share Tech Mono"');
+    const noteText = w.notes.slice(0, 70);
+    tt(ctx, noteText, bx, y + 24, 'rgba(195,208,218,0.82)', '10px "Share Tech Mono"');
+  }
+}
+
+// Helper: atmosphere color by code
+function atmoColor(a) {
+  if(a===0) return '#888888';
+  if(a===1) return '#aaaaaa';
+  if(a>=2&&a<=3) return '#ffcc44';
+  if(a>=4&&a<=5) return '#88ddff';
+  if(a>=6&&a<=8) return '#44aaff';
+  if(a===9) return '#ff9944';
+  if(a>=10&&a<=12) return '#ff4444';
+  return '#cc88ff';
+}
+
+// Helper: law level color
+function lawColor(l) {
+  if(l<=2) return '#39ff9a';
+  if(l<=5) return '#ffd166';
+  if(l<=7) return '#ff9a5c';
+  return '#ff4444';
+}
+
+// Helper: hex color to rgba string
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function tt(ctx,t,x,y,c,f,a='left'){ctx.fillStyle=c;ctx.font=f;ctx.textAlign=a;ctx.fillText(t,x,y);}
+function ln(ctx,x1,y1,x2,y2,c){ctx.strokeStyle=c;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+
+// ── HEADER ─────────────────────────────────────────────────
+function drawHeader(ctx,w,W,H){
+  ctx.fillStyle='rgba(1,4,10,0.93)';ctx.fillRect(14,14,W-28,H-2);
+  ctx.strokeStyle='rgba(0,200,255,0.22)';ctx.lineWidth=1;ctx.strokeRect(14,14,W-28,H-2);
+  tt(ctx,'IMPERIAL SURVEY CORPS  ◆  WORLD DATA DOSSIER  ◆  IISS ASTROGRAPHY SECTION',22,26,'rgba(0,200,255,0.48)','8px "Share Tech Mono"');
+  ctx.fillStyle='rgba(0,200,255,0.22)';ctx.fillRect(22,30,W-44,1);
+  tt(ctx,w.name.toUpperCase(),24,H-3,'#ffffff','bold 22px "Orbitron"');
+  if(w.sector||w.hex){const loc=[w.sector,w.hex].filter(Boolean).join('  ◆  ');tt(ctx,loc,W-22,H-3,'rgba(0,200,255,0.6)','9px "Share Tech Mono"','right');}
+}
+
+// ── FOOTER ─────────────────────────────────────────────────
+function drawFooter(ctx,w,W,H,FH){
+  ctx.fillStyle='rgba(1,4,10,0.93)';ctx.fillRect(14,H-FH-8,W-28,FH);
+  ctx.strokeStyle='rgba(0,200,255,0.16)';ctx.lineWidth=1;ctx.strokeRect(14,H-FH-8,W-28,FH);
+  tt(ctx,'CLASSIFICATION: OPEN  ◆  IMPERIAL INTERSTELLAR SCOUT SERVICE',22,H-15,'rgba(0,200,255,0.32)','8px "Share Tech Mono"');
+  tt(ctx,`SURVEY DATE: ${new Date().toISOString().split('T')[0].replace(/-/g,'/')}`,W-22,H-15,'rgba(0,200,255,0.32)','8px "Share Tech Mono"','right');
+}
+
+// ── FRAME ──────────────────────────────────────────────────
+function drawFrame(ctx,W,H){
+  ctx.strokeStyle='rgba(0,200,255,0.28)';ctx.lineWidth=1;ctx.strokeRect(8,8,W-16,H-16);
+  ctx.strokeStyle='rgba(0,200,255,0.07)';ctx.lineWidth=0.5;ctx.strokeRect(11,11,W-22,H-22);
+  [[12,12],[W-12,12],[12,H-12],[W-12,H-12]].forEach(([cx,cy])=>{
+    const sx=cx<W/2?1:-1,sy=cy<H/2?1:-1;
+    ctx.strokeStyle='rgba(0,200,255,0.62)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+sx*24,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,cy+sy*24);ctx.stroke();
+  });
+}
+
+// ── UTILS ──────────────────────────────────────────────────
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+function seededRNG(seed){let s=seed||42;return function(){s=(s*1664525+1013904223)&0xFFFFFFFF;return(s>>>0)/0xFFFFFFFF;};}
+
+// ── DOWNLOAD ───────────────────────────────────────────────
+function downloadHandout(fmt){
+  if(!currentWorld){alert('Generate a world first!');return;}
+  const canvas=document.getElementById('handoutCanvas');
+  const link=document.createElement('a');
+  const n=(currentWorld.name||'world').toLowerCase().replace(/[^a-z0-9]/g,'_');
+  link.href=fmt==='png'?canvas.toDataURL('image/png'):canvas.toDataURL('image/jpeg',0.95);
+  link.download=`traveller_${n}.${fmt}`;link.click();
+}
+
+// ── INIT PLACEHOLDER ───────────────────────────────────────
+(function(){
+  const cv=document.getElementById('handoutCanvas'),ctx=cv.getContext('2d');
+  cv.width=CW;cv.height=CH;
+  ctx.fillStyle='#010306';ctx.fillRect(0,0,CW,CH);
+  for(let i=0;i<160;i++){ctx.beginPath();ctx.arc(Math.random()*CW,Math.random()*CH,Math.random()*1.0,0,Math.PI*2);ctx.fillStyle=`rgba(200,218,255,${Math.random()*0.65+0.08})`;ctx.fill();}
+  drawFrame(ctx,CW,CH);
+  tt(ctx,'AWAITING WORLD DATA...',CW/2,CH/2,'rgba(0,200,255,0.25)','bold 13px "Share Tech Mono"','center');
+  tt(ctx,'Generate or enter world parameters to render handout',CW/2,CH/2+20,'rgba(0,200,255,0.12)','10px "Share Tech Mono"','center');
+  tt(ctx,'Load planet textures in the left panel for best results ◆',CW/2,CH/2+36,'rgba(255,209,102,0.2)','9px "Share Tech Mono"','center');
+})();
+</script>
+</body>
+</html>
