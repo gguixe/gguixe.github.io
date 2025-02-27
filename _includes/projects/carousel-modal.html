@@ -1,44 +1,38 @@
 {% assign images = include.images %}
 {% assign project_id = include.project_id %}
+{% assign total = images.size %}
+{% if include.video %}{% assign total = total | plus: 1 %}{% endif %}
 
-<div id="carousel-{{ project_id }}" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        {% for image in images %}
-            <li data-target="#carousel-{{ project_id }}" data-slide-to="{{ forloop.index0 }}" 
-                {% if forloop.first %}class="active"{% endif %}></li>
-        {% endfor %}
-        {% if include.video %}
-            <li data-target="#carousel-{{ project_id }}" data-slide-to="{{ images.size }}"></li>
-        {% endif %}
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-        {% for image in images %}
-            <div class="item {% if forloop.first %}active{% endif %}">
-                <img src="{{ image }}" alt="Slide {{ forloop.index }}" class="img-responsive">
-            </div>
-        {% endfor %}
-        
-        {% if include.video %}
-            <div class="item">
-                <div class="video-container">
-                    <iframe class="img-responsive" 
-                        src="{{ include.video }}" 
-                        frameborder="0" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-            </div>
-        {% endif %}
+<div class="modal-carousel" id="carousel-{{ project_id }}" data-total="{{ total }}">
+  <div class="modal-carousel-track" id="track-{{ project_id }}">
+    {% for image in images %}
+    <div class="modal-carousel-slide">
+      <img src="{{ site.baseurl }}/{{ image }}" alt="Slide {{ forloop.index }}">
     </div>
+    {% endfor %}
+    {% if include.video %}
+    <div class="modal-carousel-slide">
+      <div class="video-container">
+        <iframe src="{{ include.video }}" frameborder="0" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+    {% endif %}
+  </div>
 
-    <!-- Controls -->
-    <a class="left carousel-control" href="#carousel-{{ project_id }}" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-    </a>
-    <a class="right carousel-control" href="#carousel-{{ project_id }}" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-    </a>
+  {% if total > 1 %}
+  <button class="modal-carousel-btn prev" onclick="carouselMove('{{ project_id }}', -1)">&#8249;</button>
+  <button class="modal-carousel-btn next" onclick="carouselMove('{{ project_id }}', 1)">&#8250;</button>
+  {% endif %}
 </div>
+
+{% if total > 1 %}
+<div class="modal-carousel-dots" id="dots-{{ project_id }}">
+  {% for image in images %}
+    <span class="modal-carousel-dot {% if forloop.first %}active{% endif %}" 
+          onclick="carouselGoTo('{{ project_id }}', {{ forloop.index0 }})"></span>
+  {% endfor %}
+  {% if include.video %}
+    <span class="modal-carousel-dot" onclick="carouselGoTo('{{ project_id }}', {{ images.size }})"></span>
+  {% endif %}
+</div>
+{% endif %}

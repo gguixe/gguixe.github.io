@@ -1,13 +1,15 @@
-     <!-- Add this new div for icons -->
-     <div class="icon-links">
-        {% if project.links %}
-            {% for link in project.links %}
-                {% if link.text == "Demo" %}
-                    <i class="fa fa-gamepad" title="Demo"></i>
-                {% endif %}
-                {% if link.text == "GitHub" %}
-                    <i class="fa fa-github" title="GitHub"></i>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        </div>
+{% if include.links %}
+<div class="icon-links">
+  {% for link in include.links %}
+    <a href="{{ link.url }}" target="_blank" rel="noopener" onclick="event.stopPropagation();" title="{{ link.text }}">
+      {% if link.text == "Demo" %}
+        <i class="fa fa-gamepad"></i>
+      {% elsif link.text == "GitHub" or link.text == "Github" %}
+        <i class="fa-brands fa-github"></i>
+      {% else %}
+        <i class="fa fa-external-link"></i>
+      {% endif %}
+    </a>
+  {% endfor %}
+</div>
+{% endif %}
