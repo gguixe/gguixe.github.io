@@ -1,0 +1,131 @@
+---
+layout: default
+title: Traveller
+permalink: /traveller.html
+---
+
+<section class="section">
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="traveller-hero fade-up">
+      <div class="traveller-hero-text">
+        <div class="eyebrow">TTRPG Toolkit</div>
+        <h1 style="font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem;">
+          Traveller
+        </h1>
+        <p style="font-size: 1.15rem; color: var(--text-dim); max-width: 540px; margin-bottom: 1.5rem;">
+          A collection of tools I built for running and playing
+          <strong style="color: var(--text);">Traveller or Cepheus Engine</strong> campaigns — world generators, 
+          trade calculators, NPC creators, and more. Free to use at the table.
+        </p>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="#tools" class="btn btn-primary">
+            <i class="fa fa-dice-d6"></i> Browse Tools
+          </a>
+          <a href="{{ site.baseurl }}/blog?category=traveller" class="btn btn-outline">
+            <i class="fa fa-book-open"></i> Related Posts
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tools Grid -->
+    <div id="tools">
+      <div class="section-header fade-up fade-up-1">
+        <h2>Tools</h2>
+        <p>All tools run in the browser — no account or install required.</p>
+      </div>
+
+      {% assign traveller_tools = site.data.traveller-tools %}
+        <!-- Group tools by category if they have one -->
+        {% assign categories = traveller_tools | map: "category" | uniq %}
+        {% for category in categories %}
+          {% assign cat_tools = traveller_tools | where: "category", category %}
+          {% if category and category != "" %}
+          <h3 style="font-family: var(--ff-mono); font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+            {{ category }}
+          </h3>
+          {% endif %}
+          <div class="grid grid-2 mb-4">
+            {% for tool in cat_tools %}
+            <div class="tool-card fade-up">
+              <div class="tool-card-header">
+                <div>
+                  <div class="tool-card-title">{{ tool.title }}</div>
+                  <div class="tool-card-subtitle">{{ tool.subtitle }}</div>
+                </div>
+                <div class="tool-card-icon">
+                  <i class="{{ tool.icon | default: 'fa fa-cube' }}"></i>
+                </div>
+              </div>
+              <p class="tool-card-desc">{{ tool.description }}</p>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+                {% if tool.url %}
+                  <a href="{{ tool.url }}" class="btn btn-outline">
+                    <i class="fa fa-play"></i> Open Tool
+                  </a>
+                {% endif %}
+                {% if tool.repo %}
+                  <a href="{{ tool.repo }}" target="_blank" rel="noopener" class="btn btn-teal">
+                    <i class="fa-brands fa-github"></i> Source
+                  </a>
+                {% endif %}
+                {% if tool.tags %}
+                  <div>
+                    {% for tag in tool.tags %}
+                      <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+    </div>
+
+    <!-- About Section -->
+    <hr class="rule">
+    <div class="grid grid-2" style="align-items: start;" id="about-traveller">
+      <div class="fade-up">
+        <div class="eyebrow">Background</div>
+        <h2 style="font-size: 1.8rem;">Why Traveller?</h2>
+        <p>
+        Traveller is one of the greatest sci-fi TTRPGs ever made, built to capture the gritty, 
+        realistic feel of classic science fiction. You play scrappy merchants, mercenaries, and 
+        explorers just trying to survive in a vast, indifferent galaxy. Its legendary character creation, 
+        sandbox feel, huge range of starships and tech, and flexible skill system make it perfect for any sci-fi 
+        story you can imagine. If you love grounded, hard sci-fi, Traveller scratches that itch like nothing else.
+        </p>
+        <p>
+          These tools started as quick experiments for my own sessions and grew into 
+          something worth sharing. If they save you time at the table, consider 
+          buying me a coffee via the <a href="{{ site.baseurl }}/contact#donate">donations page</a>.
+        </p>
+      </div>
+      <div class="fade-up fade-up-2" style="background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem;">
+        <div class="eyebrow mb-2">Quick Reference</div>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; font-family: var(--ff-mono);">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <th style="text-align: left; padding: 0.4rem 0; color: var(--text-dim); font-weight: 400;">Stat</th>
+              <th style="text-align: left; padding: 0.4rem 0; color: var(--text-dim); font-weight: 400;">Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% assign uwp_stats = "Starport,Size,Atmosphere,Hydrographics,Population,Government,Law Level,Tech Level" | split: "," %}
+            {% assign uwp_codes = "A–E / X,0–A,0–C,0–A,0–A,0–D,0–L,0–F" | split: "," %}
+            {% for stat in uwp_stats %}
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 0.5rem 0; color: var(--amber);">{{ stat }}</td>
+              <td style="padding: 0.5rem 0; color: var(--text-dim);">{{ uwp_codes[forloop.index0] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>

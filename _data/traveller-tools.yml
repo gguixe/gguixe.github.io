@@ -1,0 +1,64 @@
+# _data/traveller-tools.yml
+# ─────────────────────────────────────────────────────────
+# Each entry drives a tool card on /traveller.
+# Fields:
+#   title       — Card heading
+#   subtitle    — Small subtext (what it does, briefly)
+#   description — Longer paragraph shown in the card
+#   icon        — Font Awesome class e.g. "fa fa-globe"
+#   category    — Optional grouping header (e.g. "World Building")
+#   url         — Link to the running tool (can be a page, tool embed, etc.)
+#   repo        — Optional GitHub link
+#   tags        — List of short labels
+# ─────────────────────────────────────────────────────────
+
+- title: Planet Handout Generator
+  subtitle: UWP · Planet · Handout 
+  description: >
+    Generate random or manual Planet Handouts with UWP codes and basic system details using MgT 2e rules.
+  icon: fa fa-globe
+  category: World Building
+  url: /tools/planet-handout
+  repo: https://github.com/gguixe/traveller-planet-handout
+  tags: [UWP, Planet, Sandbox]
+
+# - title: World Generator
+#   subtitle: UWP · Subsector Builder
+#   description: >
+#     Generate full subsectors with UWP codes, trade classifications,
+#     travel zones, and basic system details using Classic Traveller rules.
+#   icon: fa fa-globe
+#   category: World Building
+#   url: /tools/world-generator
+#   repo: https://github.com/YOUR_USERNAME/traveller-world-gen
+#   tags: [UWP, Subsector, Sandbox]
+
+# - title: Trade Calculator
+#   subtitle: Freight · Speculation
+#   description: >
+#     Calculate freight, passenger availability, and speculative trade 
+#     tons with correct modifiers for trade codes and broker skill.
+#   icon: fa fa-coins
+#   category: Trade & Economy
+#   url: /tools/trade-calc
+#   tags: [Trade, Cargo, Credits]
+
+# - title: NPC Generator
+#   subtitle: Characters · Contacts · Patrons
+#   description: >
+#     Quickly generate NPCs with UPP, career history, skills, and
+#     personality seeds — useful for patrons, rivals, crew, and locals.
+#   icon: fa fa-user-astronaut
+#   category: Characters
+#   url: /tools/npc-gen
+#   tags: [NPC, UPP, Careers]
+
+# - title: Character Creator
+#   subtitle: Mustering Out · Careers
+#   description: >
+#     Step through Classic Traveller character creation with tracked
+#     enlistment, promotion, survival rolls, and automatic mustering out.
+#   icon: fa fa-id-card
+#   category: Characters
+#   url: /tools/char-creator
+#   tags: [PC, Characters, Careers]

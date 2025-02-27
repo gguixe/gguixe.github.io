@@ -3,86 +3,93 @@ layout: default
 title: About
 permalink: /about.html
 ---
-<section id="team">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 text-center">
-				<div class="section-title">
-					<h2>ABOUT</h2>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4">
-			</div>
-			<!-- team member item -->
-			<div class="col-md-4">
-				<div class="team-item">
-					<div class="team-image">
-						<img src="assets/images/about/rat.png" class="img-responsive" alt="author">
-					</div>
-					<div class="team-text">
-						<h3>Mutant Rat</h3>
-						<div class="team-position">Software Engineer</div>
-						<p>Hobbyist game developer with a deep love for video games, boardgames & TTRPG and over six years of experience in the embedded SW industry.</p>
-					</div>
-				</div>
-			</div>
-			<!-- end team member item -->
-		</div>
-	</div>
-</section>
 
-<section id="about" class="mz-module">
-	<div class="container light-bg">
-		<!-- <div class="row">
-			<div class="col-lg-12 text-center">
-				<div class="section-title">
-					<h2>SKILLS</h2>
-				</div>
-			</div>
-		</div> -->
-		<!-- <div class="row">
-			<div class="col-md-6 text-center">
-				<div class="mz-about-container">
-					<p>I've worked mostly with C, C# & Rust.</p>
-				</div>
-			</div>
-		</div> -->
-		<div class="row row-0-gutter justify-content-center">
-			<!-- about module -->
-			<div class="col-md-4 col-0-gutter mz-about-default text-center">
-				<div class="mz-module-about">
-					<i class="fa fa-gamepad ot-circle"></i>
-					<h3>Unity</h3>
-				</div>
-			</div>
-			<!-- end about module -->
-			<!-- about module -->
-			<div class="col-md-4 col-0-gutter mz-about-dark text-center">
-				<div class="mz-module-about">
-					<i class="fa fa-code ot-circle"></i>
-					<h3>C, C++, C#, Rust, HTML/CSS/JS, Python</h3>
-				</div>
-			</div>
-			<!-- end about module -->
-			<!-- about module -->
-			<div class="col-md-4 col-0-gutter mz-about-default text-center">
-				<div class="mz-module-about">
-					<i class="fa fa-microchip ot-circle"></i>
-					<h3>Yocto, STM32, NXP, FPGA</h3>
-				</div>
-			</div>
-			<!-- end about module -->
-			<!-- about module -->
-			<!-- <div class="col-md-3 col-0-gutter mz-about-dark text-center">
-				<div class="mz-module-about">
-					<i class="fa fa-cube ot-circle"></i>
-					<h3>XXXX</h3>
-				</div>
-			</div> -->
-			<!-- end about module -->
-		</div>
-	</div>
-	<!-- /.container -->
+<section class="section">
+  <div class="container">
+
+    <!-- ── HERO ─────────────────────────────────────────────── -->
+    <div class="about-hero fade-up">
+      <img src="{{ site.baseurl }}/assets/images/about/rat.png"
+           alt="Mutant Rat"
+           class="about-avatar">
+      <div>
+        <div class="eyebrow">Who am I?</div>
+        <h1 class="about-name">Mutant Rat</h1>
+        <div class="about-role">Software Engineer &middot; Game Dev &middot; TTRPG Enjoyer</div>
+        <p>
+          Hobbyist game developer with a deep love for video games, board games &amp; TTRPGs,
+          and over eight years of experience in the embedded software industry.
+          I build things at the intersection of hardware, software, and play.
+        </p>
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:1.25rem;">
+          <a href="{{ site.baseurl }}/gamedev.html" class="btn btn-primary">
+            <i class="fa fa-gamepad"></i> Game Dev
+          </a>
+		  <a href="{{ site.baseurl }}/embedded.html" class="btn btn-primary">
+            <i class="fa fa-microchip"></i> Embedded
+          </a>
+          <a href="{{ site.baseurl }}/contact.html" class="btn btn-outline">
+            <i class="fa fa-paper-plane"></i> Get In Touch
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- ── SKILL BLOCKS ──────────────────────────────────────── -->
+    <div class="section-header fade-up">
+      <div class="eyebrow">What I work with</div>
+      <h2>Skills</h2>
+    </div>
+
+    <div class="skill-blocks fade-up fade-up-1">
+      <div class="skill-block">
+        <i class="fa fa-gamepad"></i>
+        <h3>Game Dev</h3>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem; margin-bottom:0;">Unity &middot; Prototyping</p>
+      </div>
+      <div class="skill-block">
+        <i class="fa fa-code"></i>
+        <h3>Languages</h3>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem; margin-bottom:0;">C &middot; C++ &middot; C# &middot; Rust &middot; Python &middot; HTML/CSS/JS</p>
+      </div>
+      <div class="skill-block">
+        <i class="fa fa-microchip"></i>
+        <h3>Embedded</h3>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem; margin-bottom:0;">Yocto &middot; STM32 &middot; NXP &middot; FPGA</p>
+      </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- ── INTERESTS ─────────────────────────────────────────── -->
+    <div class="grid grid-2 fade-up" style="align-items:start;">
+      <div>
+        <div class="eyebrow">Interests</div>
+        <h2 style="font-size:1.8rem; margin-bottom:1rem;">What I'm into</h2>
+        <p>Video games of all kinds — RPGs, Strategy (even RTS), immersive sims, indies or tiny jam prototypes. Board games and TTRPGs around a table with good company.</p>
+        <p>I also enjoy digging into hardware — designing PCBs, writing firmware, and making microcontrollers do interesting things.</p>
+      </div>
+      <div>
+        <div class="eyebrow">Currently</div>
+        <h2 style="font-size:1.8rem; margin-bottom:1rem;">Working on</h2>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.75rem;">
+          <li style="display:flex; gap:0.75rem; align-items:flex-start;">
+            <i class="fa fa-rocket" style="color:var(--amber); margin-top:0.25rem; flex-shrink:0;"></i>
+            <span>Space Arrow — top-down tactical shooter / ImSim</span>
+          </li>
+          <li style="display:flex; gap:0.75rem; align-items:flex-start;">
+            <i class="fa fa-dice-d6" style="color:var(--amber); margin-top:0.25rem; flex-shrink:0;"></i>
+            <span>TTRPG tools — browser-based utilities for Traveller campaigns</span>
+          </li>
+          <li style="display:flex; gap:0.75rem; align-items:flex-start;">
+            <i class="fa fa-pen-nib" style="color:var(--amber); margin-top:0.25rem; flex-shrink:0;"></i>
+            <span>This site — always tweaking something</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 </section>

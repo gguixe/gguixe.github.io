@@ -4,85 +4,98 @@ title: Blog
 permalink: /blog.html
 ---
 
-<section id="blog">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="section-title">
-                    <h2>{{ page.title }}</h2>
-                    {% if page.subtitle %}
-                    <p>{{ page.subtitle }}</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+<section class="section">
+  <div class="container">
 
-        <!-- Search functionality -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <input type="text" id="titleSearch" class="form-control" placeholder="Search by title...">
-            </div>
-            <div class="col-md-6">
-                <select id="categoryFilter" class="form-control">
-                    <option value="">All Categories</option>
-                    {% assign categories = site.posts | map: "category" | uniq %}
-                    {% for category in categories %}
-                    <option value="{{ category }}">{{ category }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-
-        <!-- Blog posts container -->
-        <div id="blogPosts">
-            {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
-            {% for post in sorted_posts %}
-            <div class="row blog-post" data-title="{{ post.title | downcase }}" data-category="{{ post.category }}">
-                <div class="col-md-3 blog-image-container">
-                    {% if post.image %}
-                    <img src="{{ site.baseurl }}/assets/images/{{ post.image }}" alt="{{ post.title }}" class="img-responsive blog-thumbnail">
-                    {% endif %}
-                </div>
-                <div class="col-md-9">
-                    <h3>{{ post.title }}</h3>
-                    <div class="post-meta">
-                        <span class="date"><i class="fa fa-calendar"></i> {{ post.date | date: "%B %-d, %Y" }}</span>
-                        {% if post.category %}<span class="category"><i class="fa fa-tag"></i> {{ post.category }}</span>{% endif %}
-                        {% if post.author %}<span class="author"><i class="fa fa-user"></i> {{ post.author }}</span>{% endif %}
-                    </div>
-                    <p class="post-excerpt">
-                        {{ post.excerpt | strip_html | truncatewords: 50 }}
-                    </p>
-                    <a href="{{ post.url | prepend: site.baseurl }}" class="btn btn-default">Read More</a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+    <div class="section-header fade-up">
+      <div class="eyebrow">Writing</div>
+      <h2>{{ page.title }}</h2>
+      {% if page.subtitle %}
+      <p>{{ page.subtitle }}</p>
+      {% endif %}
     </div>
+
+    <!-- Search / Filter bar -->
+    <div class="blog-search-bar fade-up fade-up-1">
+      <input type="text" id="titleSearch" class="form-control" placeholder="Search posts…">
+      <select id="categoryFilter" class="form-control" style="min-width: 180px;">
+        <option value="">All Categories</option>
+        {% assign categories = site.posts | map: "category" | uniq | sort %}
+        {% for category in categories %}
+        <option value="{{ category | downcase }}">{{ category }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Post list -->
+    <div class="blog-list fade-up fade-up-2" id="blogPosts">
+      {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
+      {% for post in sorted_posts %}
+      <article
+        class="blog-card"
+        data-title="{{ post.title | downcase }}"
+        data-category="{{ post.category | downcase }}">
+
+        <div class="blog-card-thumb">
+          {% if post.image %}
+          <img src="{{ site.baseurl }}/assets/images/{{ post.image }}"
+               alt="{{ post.title }}" loading="lazy">
+          {% endif %}
+        </div>
+
+        <div class="blog-card-body">
+          <h3 class="blog-card-title">{{ post.title }}</h3>
+          <div class="blog-meta">
+            <span><i class="fa fa-calendar"></i>{{ post.date | date: "%B %-d, %Y" }}</span>
+            {% if post.category %}
+            <span><i class="fa fa-tag"></i>{{ post.category }}</span>
+            {% endif %}
+            {% if post.author %}
+            <span><i class="fa fa-user"></i>{{ post.author }}</span>
+            {% endif %}
+          </div>
+          <p class="blog-excerpt">{{ post.excerpt | strip_html | truncatewords: 45 }}</p>
+          <a href="{{ post.url | prepend: site.baseurl }}" class="btn btn-outline">
+            Read More <i class="fa fa-arrow-right"></i>
+          </a>
+        </div>
+
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- Empty state -->
+    <div id="noResults" style="display: none; text-align: center; padding: 4rem 0;">
+      <p style="font-family: var(--ff-mono); color: var(--text-dim);">No posts match your search.</p>
+    </div>
+
+  </div>
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const titleSearch = document.getElementById('titleSearch');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const blogPosts = document.querySelectorAll('.blog-post');
+document.addEventListener('DOMContentLoaded', () => {
+  const titleSearch    = document.getElementById('titleSearch');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const posts          = document.querySelectorAll('.blog-card');
+  const noResults      = document.getElementById('noResults');
 
-    function filterPosts() {
-        const searchTerm = titleSearch.value.toLowerCase();
-        const selectedCategory = categoryFilter.value.toLowerCase();
+  function filterPosts() {
+    const term = titleSearch.value.toLowerCase();
+    const cat  = categoryFilter.value.toLowerCase();
+    let visible = 0;
 
-        blogPosts.forEach(post => {
-            const title = post.getAttribute('data-title');
-            const category = post.getAttribute('data-category').toLowerCase();
-            
-            const matchesTitle = title.includes(searchTerm);
-            const matchesCategory = !selectedCategory || category === selectedCategory;
+    posts.forEach(post => {
+      const matchTitle = post.dataset.title.includes(term);
+      const matchCat   = !cat || post.dataset.category === cat;
+      const show       = matchTitle && matchCat;
+      post.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
 
-            post.style.display = (matchesTitle && matchesCategory) ? 'block' : 'none';
-        });
-    }
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
 
-    titleSearch.addEventListener('input', filterPosts);
-    categoryFilter.addEventListener('change', filterPosts);
+  titleSearch.addEventListener('input', filterPosts);
+  categoryFilter.addEventListener('change', filterPosts);
 });
 </script>

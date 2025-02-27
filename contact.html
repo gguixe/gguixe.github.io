@@ -4,100 +4,180 @@ title: Contact
 permalink: /contact.html
 ---
 
-<section id="contact">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 text-center">
-				<div class="section-title">
-					<h2>Contact Me</h2>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12 text-center">
-				<form name="sentMessage" id="contactForm" action="https://formspree.io/f/xannvjel" method="POST">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Your Name *" id="name" name="name" required data-validation-required-message="Please enter your name.">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<input type="email" class="form-control" placeholder="Your Email *" id="email" name="_replyto" required data-validation-required-message="Please enter your email address.">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<textarea class="form-control" placeholder="Your Message *" id="message" name="message" required data-validation-required-message="Please enter a message."></textarea>
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="row">
-						<div class="col-lg-12 text-center">
-							<div id="success"></div>
-							<button type="submit" class="btn">Send Message</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+<section class="section">
+  <div class="container">
+
+    <div class="section-header fade-up">
+      <div class="eyebrow">Get In Touch</div>
+      <h2>Contact</h2>
+      <p>Questions, feedback, collaboration ideas, or just saying hi.</p>
+    </div>
+
+    <div class="contact-layout">
+
+      <!-- ── LEFT: FORM ──────────────────────────────── -->
+      <div class="fade-up">
+        <form id="contactForm" action="https://formspree.io/f/xannvjel" method="POST" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name"
+                   placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="_replyto"
+                   placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="message">Message</label>
+            <textarea class="form-control" id="message" name="message"
+                      placeholder="What's on your mind?" required></textarea>
+          </div>
+          <div id="formStatus"></div>
+          <button type="submit" class="btn btn-primary mt-2" id="submitBtn">
+            <i class="fa fa-paper-plane"></i>
+            <span>Send Message</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- ── RIGHT: INFO + SOCIAL ────────────────────── -->
+      <div class="fade-up fade-up-2">
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 1.5rem;">
+          <div class="eyebrow mb-2">Also find me at</div>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+
+            {% if site.data.social.github %}
+            <a href="https://github.com/{{ site.data.social.github }}" target="_blank" rel="noopener"
+               style="display: flex; align-items: center; gap: 0.75rem; color: var(--text); text-decoration: none; padding: 0.5rem 0; border-bottom: 1px solid var(--border); transition: color 0.2s;">
+              <i class="fa-brands fa-github" style="color: var(--amber); width: 20px; text-align: center;"></i>
+              <span style="font-family: var(--ff-mono); font-size: 0.85rem;">github.com/{{ site.data.social.github }}</span>
+            </a>
+            {% endif %}
+
+            {% if site.data.social.itch %}
+            <a href="https://{{ site.data.social.itch }}.itch.io" target="_blank" rel="noopener"
+               style="display: flex; align-items: center; gap: 0.75rem; color: var(--text); text-decoration: none; padding: 0.5rem 0; border-bottom: 1px solid var(--border); transition: color 0.2s;">
+              <i class="fa-brands fa-itch-io" style="color: var(--amber); width: 20px; text-align: center;"></i>
+              <span style="font-family: var(--ff-mono); font-size: 0.85rem;">{{ site.data.social.itch }}.itch.io</span>
+            </a>
+            {% endif %}
+
+            {% if site.data.social.mastodon %}
+            <a href="{{ site.data.social.mastodon }}" target="_blank" rel="noopener me"
+               style="display: flex; align-items: center; gap: 0.75rem; color: var(--text); text-decoration: none; padding: 0.5rem 0; transition: color 0.2s;">
+              <i class="fa-brands fa-mastodon" style="color: var(--amber); width: 20px; text-align: center;"></i>
+              <span style="font-family: var(--ff-mono); font-size: 0.85rem;">Mastodon</span>
+            </a>
+            {% endif %}
+
+          </div>
+        </div>
+
+        <p class="text-dim" style="font-size: 0.85rem;">
+          I typically reply within a few days. For project collaboration or licensing questions, 
+          feel free to be specific about what you're working on.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         DONATIONS SECTION
+    ══════════════════════════════════════════════════ -->
+    <hr class="rule" id="donate">
+
+    <div class="fade-up" style="max-width: 680px;">
+      <div class="eyebrow">Support the Work</div>
+      <h2 style="font-size: 1.8rem; margin-bottom: 0.75rem;">Donations</h2>
+      <p style="color: var(--text-dim);">
+        Everything here is free — the Traveller tools, the game prototypes, the blog posts. 
+        If something saved you prep time or made your session better, you can buy me a coffee. 
+        No pressure, but it's appreciated and helps me keep building things.
+      </p>
+    </div>
+
+    <div class="donation-grid fade-up fade-up-1">
+
+      <!-- Ko-fi -->
+      <a href="https://ko-fi.com/humusk" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon">☕</div>
+        <div class="donation-card-name">Ko-fi</div>
+        <div class="donation-card-handle">ko-fi.com/humusk</div>
+      </a>
+
+      <!-- PayPal -->
+      <a href="https://www.paypal.com/paypalme/Guixe" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon" style="font-size: 1.8rem;">
+          <i class="fa-brands fa-paypal" style="color: #009cde;"></i>
+        </div>
+        <div class="donation-card-name">PayPal</div>
+        <div class="donation-card-handle">paypal.me/Guixe</div>
+      </a>
+
+      <!-- Itch.io (buy games / PWYW) -->
+      <a href="https://fancy-skaven.itch.io/" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon" style="font-size: 1.8rem;">
+          <i class="fa-brands fa-itch-io" style="color: #fa5c5c;"></i>
+        </div>
+        <div class="donation-card-name">itch.io</div>
+        <div class="donation-card-handle">Buy games / PWYW</div>
+      </a>
+
+      <!-- Placeholder slot — add Patreon, Buy Me a Coffee, etc. -->
+      <!-- 
+      <a href="https://patreon.com/YOUR_USERNAME" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon" style="font-size: 1.8rem;">
+          <i class="fa-brands fa-patreon" style="color: #f96854;"></i>
+        </div>
+        <div class="donation-card-name">Patreon</div>
+        <div class="donation-card-handle">Monthly support</div>
+      </a>
+      -->
+
+    </div>
+
+  </div>
 </section>
 
 <script>
-	$(document).ready(function() {
-		$("#contactForm").submit(function(e) {
-			e.preventDefault();
-			
-			// Sanitize inputs
-			const name = DOMPurify.sanitize($("#name").val());
-			const email = DOMPurify.sanitize($("#email").val());
-			const message = DOMPurify.sanitize($("#message").val());
-			
-			const $form = $(this);
-			const $submit = $('button[type="submit"]', $form);
-			const $success = $("#success");
-			
-			$.ajax({
-				type: "POST",
-				url: $form.attr("action"),
-				data: {
-					name: name,
-					email: email,
-					message: message,
-					csrf_token: $("#csrf_token").val()
-				},
-				beforeSend: function() {
-					$submit.prop('disabled', true);
-				},
-				success: function(response) {
-					$success.empty().append(
-						$("<div>", {
-							class: "alert alert-success",
-							text: response
-						})
-					);
-					$form.trigger("reset");
-				},
-				error: function() {
-					$success.empty().append(
-						$("<div>", {
-							class: "alert alert-danger",
-							text: "An error occurred. Please try again later."
-						})
-					);
-				},
-				complete: function() {
-					$submit.prop('disabled', false);
-				}
-			});
-		});
-	});
+document.addEventListener('DOMContentLoaded', () => {
+  const form      = document.getElementById('contactForm');
+  const status    = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('submitBtn');
+  const btnLabel  = submitBtn.querySelector('span');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    // Basic validation
+    const name    = form.name.value.trim();
+    const email   = form.email.value.trim();
+    const message = form.message.message.value.trim();
+    if (!name || !email || !message) return;
+
+    submitBtn.disabled = true;
+    btnLabel.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
+
+      if (res.ok) {
+        status.innerHTML = '<div class="alert alert-success"><i class="fa fa-check"></i> Message sent — I\'ll get back to you soon.</div>';
+        form.reset();
+      } else {
+        throw new Error('non-ok response');
+      }
+    } catch {
+      status.innerHTML = '<div class="alert alert-danger"><i class="fa fa-triangle-exclamation"></i> Something went wrong — try emailing directly instead.</div>';
+    }
+
+    btnLabel.textContent = 'Send Message';
+    submitBtn.disabled = false;
+  });
+});
 </script>

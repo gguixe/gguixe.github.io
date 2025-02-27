@@ -1,0 +1,55 @@
+---
+layout: default
+title: Game Dev
+permalink: /gamedev.html
+---
+
+<section class="section">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="section-header fade-up">
+      <div class="eyebrow">Portfolio</div>
+      <h2>Game Dev</h2>
+      <p>Game prototypes, experiments, and interactive toys.</p>
+    </div>
+
+    <!-- ── WIDE PROJECTS ──────────────────────────── -->
+    {% assign wide_projects = site.data.projects | where: "type", "wide" %}
+    {% if wide_projects.size > 0 %}
+    <div class="project-grid project-grid--wide mb-4">
+      {% for project in wide_projects %}
+        {% include projects/wide-project.html project=project %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ── NORMAL PROJECTS ────────────────────────── -->
+    {% assign normal_projects = site.data.projects | where: "type", "normal" %}
+    {% if normal_projects.size > 0 %}
+    <div class="project-grid project-grid--normal mb-4">
+      {% for project in normal_projects %}
+        {% include projects/normal-project.html project=project %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ── NARROW PROJECTS ───────────────────────── -->
+    {% assign narrow_projects = site.data.projects | where: "type", "narrow" %}
+    {% if narrow_projects.size > 0 %}
+    <div class="project-grid project-grid--narrow mb-4">
+      {% for project in narrow_projects %}
+        {% include projects/narrow-project.html project=project %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════════════ -->
+{% for project in site.data.projects %}
+  {% include projects/project-modal.html project=project %}
+{% endfor %}

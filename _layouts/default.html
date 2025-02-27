@@ -1,21 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-  {% include head.html %}
-  <body id="page-top">
-    {% include navigation.html %}
-    
-    {{ content }}
-    
-    <p id="back-top">
-      <a href="#top"><i class="fa fa-angle-up"></i></a>
-    </p>
-    
-    {% include footer.html %}
-    
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ '/assets/js/bootstrap.min.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/SmoothScroll.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/theme-scripts.js' | relative_url }}"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} — {% endif %}Mutant Rat</title>
+  <meta name="description" content="Game dev, TTRPG tools, and embedded projects by Mutant Rat.">
+
+  <!-- Fonts via Google Fonts (Rajdhani, Crimson Pro, Share Tech Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════════ -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="{{ site.baseurl }}/" class="nav-logo">Mutant<span>Rat</span></a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="{{ site.baseurl }}/traveller"   {% if page.url contains 'traveller' %}class="active"{% endif %}>Traveller</a></li>
+      <li><a href="{{ site.baseurl }}/gamedev"    {% if page.url contains 'gamedev' %}class="active"{% endif %}>Game Dev</a></li>
+      <li><a href="{{ site.baseurl }}/embedded"    {% if page.url contains 'embedded' %}class="active"{% endif %}>Embedded</a></li>
+      <li><a href="{{ site.baseurl }}/blog"        {% if page.url contains 'blog' %}class="active"{% endif %}>Blog</a></li>
+      <li><a href="{{ site.baseurl }}/about"       {% if page.url contains 'about' %}class="active"{% endif %}>About</a></li>
+      <li><a href="{{ site.baseurl }}/contact"     {% if page.url contains 'contact' %}class="active"{% endif %}>Contact</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <i class="fa fa-bars" id="navIcon"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     PAGE CONTENT
+══════════════════════════════════════════════════ -->
+<div class="page-body">
+  {{ content }}
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <nav class="footer-links">
+        <a href="{{ site.baseurl }}/traveller">Traveller</a>
+        <a href="{{ site.baseurl }}/gamedev">Game Dev</a>
+        <a href="{{ site.baseurl }}/embedded">Embedded</a>
+        <a href="{{ site.baseurl }}/blog">Blog</a>
+        <a href="{{ site.baseurl }}/about">About</a>
+        <a href="{{ site.baseurl }}/contact">Contact</a>
+      </nav>
+      <p class="footer-copy">© {{ 'now' | date: "%Y" }} Mutant Rat - All rights reserved.
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════
+     GLOBAL JS
+══════════════════════════════════════════════════ -->
+<script>
+  // Mobile nav toggle
+  const toggle   = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  const navIcon  = document.getElementById('navIcon');
+
+  toggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navIcon.className = open ? 'fa fa-xmark' : 'fa fa-bars';
+  });
+
+  // Close nav on link click (mobile)
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navIcon.className = 'fa fa-bars';
+    });
+  });
+
+  // Generic modal system (data-modal-target / data-modal-id)
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-modal-target]');
+    if (trigger) {
+      const id = trigger.dataset.modalTarget;
+      const overlay = document.getElementById(id);
+      if (overlay) overlay.classList.add('open');
+    }
+
+    const overlay = e.target.closest('.modal-overlay');
+    if (overlay && e.target === overlay) overlay.classList.remove('open');
+
+    const closeBtn = e.target.closest('.modal-close');
+    if (closeBtn) closeBtn.closest('.modal-overlay').classList.remove('open');
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open')
+              .forEach(o => o.classList.remove('open'));
+    }
+  });
+
+// ── Modal ──────────────────────────────────────────────────────
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+// Close on overlay click
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(function(m) {
+      m.classList.remove('open');
+    });
+    document.body.style.overflow = '';
+  }
+});
+
+// ── Carousel ──────────────────────────────────────────────────
+var _carouselIndex = {};
+
+function carouselMove(id, dir) {
+  if (_carouselIndex[id] === undefined) _carouselIndex[id] = 0;
+  var carousel = document.getElementById('carousel-' + id);
+  var total = parseInt(carousel.dataset.total);
+  _carouselIndex[id] = (_carouselIndex[id] + dir + total) % total;
+  carouselRender(id);
+}
+
+function carouselGoTo(id, idx) {
+  _carouselIndex[id] = idx;
+  carouselRender(id);
+}
+
+function carouselRender(id) {
+  var idx = _carouselIndex[id] || 0;
+  var track = document.getElementById('track-' + id);
+  if (track) track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+
+  var dots = document.querySelectorAll('#dots-' + id + ' .modal-carousel-dot');
+  dots.forEach(function(d, i) {
+    d.classList.toggle('active', i === idx);
+  });
+}
+</script>
+
+</body>
 </html>
