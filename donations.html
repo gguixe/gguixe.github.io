@@ -1,0 +1,113 @@
+---
+layout: default
+title: Contact
+permalink: /donations.html
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="eyebrow">Support the Work</div>
+      <h2>Donations</h2>
+      <p style="color: var(--text-dim);">
+        Everything here is free — the Traveller tools, the game prototypes, the blog posts. 
+        If something saved you prep time or made your session better, you can buy me a coffee. 
+        No pressure, but it's appreciated and helps me keep building things.
+      </p>
+
+    <!-- ══════════════════════════════════════════════════
+         DONATIONS SECTION
+    ══════════════════════════════════════════════════ -->
+    <div class="donation-grid fade-up fade-up-1">
+
+      <!-- Patreon -->
+      <a href="https://patreon.com/mutant_rat" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon" style="font-size: 1.8rem;">
+          <i class="fa-brands fa-patreon" style="color: #f96854;"></i>
+        </div>
+        <div class="donation-card-name">Patreon</div>
+        <div class="donation-card-handle">patreon.com/mutant_rat</div>
+      </a>
+
+      <!-- Ko-fi -->
+      <a href="https://ko-fi.com/humusk" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon">☕</div>
+        <div class="donation-card-name">Ko-fi</div>
+        <div class="donation-card-handle">ko-fi.com/humusk</div>
+      </a>
+
+      <!-- PayPal -->
+      <a href="https://www.paypal.com/paypalme/Guixe" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon" style="font-size: 1.8rem;">
+          <i class="fa-brands fa-paypal" style="color: #009cde;"></i>
+        </div>
+        <div class="donation-card-name">PayPal</div>
+        <div class="donation-card-handle">paypal.me/Guixe</div>
+      </a>
+
+      <!-- Itch.io (buy games / PWYW) -->
+      <a href="https://fancy-skaven.itch.io/" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon" style="font-size: 1.8rem;">
+          <i class="fa-brands fa-itch-io" style="color: #fa5c5c;"></i>
+        </div>
+        <div class="donation-card-name">itch.io</div>
+        <div class="donation-card-handle">Buy games / PWYW</div>
+      </a>
+
+      <!-- Placeholder slot — add Patreon, Buy Me a Coffee, etc. -->
+      <!-- 
+      <a href="https://patreon.com/YOUR_USERNAME" target="_blank" rel="noopener" class="donation-card">
+        <div class="donation-card-icon" style="font-size: 1.8rem;">
+          <i class="fa-brands fa-patreon" style="color: #f96854;"></i>
+        </div>
+        <div class="donation-card-name">Patreon</div>
+        <div class="donation-card-handle">Monthly support</div>
+      </a>
+      -->
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form      = document.getElementById('contactForm');
+  const status    = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('submitBtn');
+  const btnLabel  = submitBtn.querySelector('span');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    // Basic validation
+    const name    = form.name.value.trim();
+    const email   = form.email.value.trim();
+    const message = form.message.message.value.trim();
+    if (!name || !email || !message) return;
+
+    submitBtn.disabled = true;
+    btnLabel.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
+
+      if (res.ok) {
+        status.innerHTML = '<div class="alert alert-success"><i class="fa fa-check"></i> Message sent — I\'ll get back to you soon.</div>';
+        form.reset();
+      } else {
+        throw new Error('non-ok response');
+      }
+    } catch {
+      status.innerHTML = '<div class="alert alert-danger"><i class="fa fa-triangle-exclamation"></i> Something went wrong — try emailing directly instead.</div>';
+    }
+
+    btnLabel.textContent = 'Send Message';
+    submitBtn.disabled = false;
+  });
+});
+</script>

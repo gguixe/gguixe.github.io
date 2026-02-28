@@ -27,11 +27,12 @@
 
     <ul class="nav-links" id="navLinks">
       <li><a href="{{ site.baseurl }}/traveller"   {% if page.url contains 'traveller' %}class="active"{% endif %}>Traveller</a></li>
-      <li><a href="{{ site.baseurl }}/gamedev"    {% if page.url contains 'gamedev' %}class="active"{% endif %}>Game Dev</a></li>
-      <li><a href="{{ site.baseurl }}/embedded"    {% if page.url contains 'embedded' %}class="active"{% endif %}>Embedded</a></li>
       <li><a href="{{ site.baseurl }}/blog"        {% if page.url contains 'blog' %}class="active"{% endif %}>Blog</a></li>
       <li><a href="{{ site.baseurl }}/about"       {% if page.url contains 'about' %}class="active"{% endif %}>About</a></li>
-      <li><a href="{{ site.baseurl }}/contact"     {% if page.url contains 'contact' %}class="active"{% endif %}>Contact</a></li>
+      <li><a href="{{ site.baseurl }}/donations" class="nav-donate {% if page.url contains 'donations' %}active{% endif %}">Donations</a></li>
+      <li class="nav-divider" aria-hidden="true">|</li>
+      <li><a href="https://github.com/gguixe" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://fancy-skaven.itch.io/" target="_blank" rel="noopener">itch.io</a></li>
     </ul>
 
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -55,11 +56,11 @@
     <div class="footer-inner">
       <nav class="footer-links">
         <a href="{{ site.baseurl }}/traveller">Traveller</a>
-        <a href="{{ site.baseurl }}/gamedev">Game Dev</a>
-        <a href="{{ site.baseurl }}/embedded">Embedded</a>
+        <a href="https://github.com/gguixe">Github</a>
+        <a href="https://fancy-skaven.itch.io/">itch.io</a>
         <a href="{{ site.baseurl }}/blog">Blog</a>
         <a href="{{ site.baseurl }}/about">About</a>
-        <a href="{{ site.baseurl }}/contact">Contact</a>
+        <a href="{{ site.baseurl }}/donations">Donations</a>
       </nav>
       <p class="footer-copy">© {{ 'now' | date: "%Y" }} Mutant Rat - All rights reserved.
   </div>

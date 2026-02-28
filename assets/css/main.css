@@ -158,6 +158,24 @@ pre  { padding: 1.2rem; overflow-x: auto; margin-bottom: 1.5rem; }
   padding: 0.5rem;
 }
 
+.nav-donate {
+  background-color: #e8a020;
+  color: #fff !important;
+  padding: 6px 14px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.nav-donate:hover {
+  background-color: #c8871a;
+}
+
+.nav-divider {
+  opacity: 0.3;
+  pointer-events: none;
+  margin: 0 4px;
+}
+
 /* ── PAGE WRAPPER ────────────────────────────────────────────── */
 .page-body {
   padding-top: var(--nav-h);
