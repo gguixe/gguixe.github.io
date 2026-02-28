@@ -19,7 +19,7 @@
   icon: fa fa-globe
   category: World Building
   url: /tools/planet-handout
-  repo: https://github.com/gguixe/traveller-planet-handout
+  repo: https://github.com/gguixe/planet-handout-generator
   tags: [UWP, Planet, Sandbox]
 
 # - title: World Generator
